@@ -1,3 +1,7 @@
+<!-- TODO: <?php echo htmlentities($result->email); ?> -->
+<?php
+require_once "../includes/session.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Img Font end</title>
+    <title>3RAW - Images</title>
     <link rel="stylesheet" href="css/owl/owl.carousel.min.css">
     <link rel="stylesheet" href="css/owl/owl.theme.default.min.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -51,32 +55,25 @@
     <!--TODO: This navigation-->
     <nav class="navbar navbar-expand-lg Linear-Gradient-nav fixed-top fix-z-1">
 
-        <img class="ds-hover-icon rounded navbar-brand ml-4" src="images/list.png" id="menu-toggle-both"
-            style="width:22px;height:auto;">
-        <a class="navbar-brand ds-hover nav-link" href="#">
+        <img class="ds-hover-icon rounded navbar-brand ml-4" src="images/list.png" id="menu-toggle-both" style="width:22px;height:auto;">
+        <a class="navbar-brand ds-hover nav-link" href="../home">
             <img src="images/7.png" width="20" height="auto" alt="logo">
             3RAW
         </a>
         <!--TODO:SEARCH-->
         <div class="search-navbar" id="search-navbar">
-            <input class="" type="search" name="Search" id="search"
-                placeholder="Search anything you need: images, #tag, @user, etc...">
+            <input class="" type="search" name="Search" id="search" placeholder="Search anything you need: images, #tag, @user, etc...">
         </div>
 
         <!--TODO:END SEARCH-->
         <!--TODO: upload image-->
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="nav navbar-nav ml-auto">
-                <li class="ds-hover nav-item text-white">
-                    <a class="nav-link pl-1" href="#">Login</a>
-                </li>
-                <li class="ds-hover nav-item text-white">
-                    <a class="nav-link" href="#">Create a account</a>
-                </li>
+                <!-- TODO: PHP USER -->
+                <?php echo $log_reg; ?>
             </ul>
         </div>
     </nav>
@@ -95,40 +92,31 @@
                         <img class="ds-owl-box img-thumbnail" src="images/Images/10.jpg" alt="" srcset="">
                     </div>
                     <div class="owl-item">
-                        <img class="ds-owl-box img-thumbnail"
-                            src="images/Images/40534920_1920181574799697_4874050589694099456_n.jpg" alt="" srcset="">
+                        <img class="ds-owl-box img-thumbnail" src="images/Images/40534920_1920181574799697_4874050589694099456_n.jpg" alt="" srcset="">
                     </div>
                     <div class="owl-item">
-                        <img class="ds-owl-box img-thumbnail"
-                            src="images/Images/41111462_265972034028025_1466627333245894656_n.jpg" alt="" srcset="">
+                        <img class="ds-owl-box img-thumbnail" src="images/Images/41111462_265972034028025_1466627333245894656_n.jpg" alt="" srcset="">
                     </div>
                     <div class="owl-item">
-                        <img class="ds-owl-box img-thumbnail"
-                            src="images/Images/41270698_2075618492461882_8864347173597216768_n.jpg" alt="" srcset="">
+                        <img class="ds-owl-box img-thumbnail" src="images/Images/41270698_2075618492461882_8864347173597216768_n.jpg" alt="" srcset="">
                     </div>
                     <div class="owl-item">
-                        <img class="ds-owl-box img-thumbnail"
-                            src="images/Images/41368502_2053692934940900_597907040135806976_n.jpg" alt="" srcset="">
+                        <img class="ds-owl-box img-thumbnail" src="images/Images/41368502_2053692934940900_597907040135806976_n.jpg" alt="" srcset="">
                     </div>
                     <div class="owl-item">
-                        <img class="ds-owl-box img-thumbnail"
-                            src="images/Images/41380304_1458535600956711_6812352777574940672_n.jpg" alt="" srcset="">
+                        <img class="ds-owl-box img-thumbnail" src="images/Images/41380304_1458535600956711_6812352777574940672_n.jpg" alt="" srcset="">
                     </div>
                     <div class="owl-item">
-                        <img class="ds-owl-box img-thumbnail"
-                            src="images/Images/41382457_146220186311853_4229486198835380224_n.jpg" alt="" srcset="">
+                        <img class="ds-owl-box img-thumbnail" src="images/Images/41382457_146220186311853_4229486198835380224_n.jpg" alt="" srcset="">
                     </div>
                     <div class="owl-item">
-                        <img class="ds-owl-box img-thumbnail"
-                            src="images/Images/41388443_1096891320466326_449729117940613120_n.jpg" alt="" srcset="">
+                        <img class="ds-owl-box img-thumbnail" src="images/Images/41388443_1096891320466326_449729117940613120_n.jpg" alt="" srcset="">
                     </div>
                     <div class="owl-item">
-                        <img class="ds-owl-box img-thumbnail"
-                            src="images/Images/41410692_2656379547920465_4043706546633310208_n.jpg" alt="" srcset="">
+                        <img class="ds-owl-box img-thumbnail" src="images/Images/41410692_2656379547920465_4043706546633310208_n.jpg" alt="" srcset="">
                     </div>
                     <div class="owl-item">
-                        <img class="ds-owl-box img-thumbnail"
-                            src="images/Images/41421615_1096891283799663_6699789115040202752_n.jpg" alt="" srcset="">
+                        <img class="ds-owl-box img-thumbnail" src="images/Images/41421615_1096891283799663_6699789115040202752_n.jpg" alt="" srcset="">
                     </div>
                 </div>
             </div>
@@ -582,7 +570,9 @@
     </section>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
     <script>
-        baguetteBox.run('.grid-gallery', { animation: 'slideIn' });
+        baguetteBox.run('.grid-gallery', {
+            animation: 'slideIn'
+        });
     </script>
     <!--TODO:test load <div id="LoadNewsFeed"></div> -->
 
@@ -593,10 +583,11 @@
 
     </footer>
     <!--TODO: That's button upload-->
-    <div class="ds-upload position-fixed">
-        <button class="" id="login" type=""> <img src="images/photo.png" alt="" srcset=""> Upload</button>
-    </div>
-
+    <a href="upload.php">
+        <div class="ds-upload position-fixed">
+            <button class="" id="login" type=""> <img src="images/photo.png" alt="" srcset=""> Upload</button>
+        </div>
+    </a>
     <!--JS-->
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/popper.min.js"></script>

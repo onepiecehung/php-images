@@ -1,3 +1,7 @@
+<?php
+require_once "../includes/session.php";
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Img Font end</title>
+    <title>3RAW - Upload</title>
     <link rel="stylesheet" href="css/owl/owl.carousel.min.css">
     <link rel="stylesheet" href="css/owl/owl.theme.default.min.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -28,7 +32,7 @@
     <!--TODO: This navigation-->
     <nav class="navbar navbar-expand-lg Linear-Gradient-nav fixed-top fix-z-1">
         <div class="container">
-            <a class="navbar-brand ds-hover nav-link" href="#">
+            <a class="navbar-brand ds-hover nav-link" href="../home">
                 <img src="images/7.png" width="20" height="auto" alt="logo">
                 3RAW
             </a>
@@ -46,12 +50,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="nav navbar-nav ml-auto">
-                    <li class="ds-hover nav-item text-white">
-                        <a class="nav-link pl-1" href="#">Login</a>
-                    </li>
-                    <li class="ds-hover nav-item text-white">
-                        <a class="nav-link" href="#">Create a account</a>
-                    </li>
+                    <?php echo $log_reg; ?>
                 </ul>
             </div>
         </div>
@@ -66,13 +65,16 @@
     </footer>
     <!--TODO: That's button upload-->
     <div class="container pt-5 pb-5">
-        <form action="" method="get">
+        <form action="upload_image.php" method="POST" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-sm-12 col-lg-6">
-                    <input type='file' onchange="readURL(this);" />
+                    <input type="file" name="image" onchange="readURL(this);" required/>
                 </div>
                 <div class="col-sm-12 col-lg-6">
                     <button class="btn ds-modal-button float-right" id="upload" type="submit">Upload</button>
+                </div>
+                <div class="col-sm-12 col-lg-12">
+                    <input class="w-100" type="text" name="title_image" id="title_image" placeholder="Enter title image..." required maxlength="99">
                 </div>
                 <div class="col-sm-12 col-lg-12">
                     <img class="ds-img-upload" id="blah" src="images/bilibili.jpeg" alt="your image" />

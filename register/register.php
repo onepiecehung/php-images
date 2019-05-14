@@ -8,11 +8,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //query
     $sql_user = 'SELECT *
     FROM users
-    WHERE name = "' . $username . '"';
+    WHERE username = "' . $username . '"';
     $sql_email = 'SELECT *
     FROM users
     WHERE email = "' . $email . '"';
-    $sql2 = "INSERT INTO users (name,email, password) VALUES ('" . $username . "','" . $email . "','" . $password . "');";
+    $sql2 = "INSERT INTO users (username,email, pass) VALUES ('" . $username . "','" . $email . "','" . $password . "');";
     //excuet
     //echo ($sql);
     $result_user = $link->query($sql_user);
@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo 'window.location.href = "../register/"';
         echo '</script>';
     } else {
-        $sql2 = "INSERT INTO users (name,email, password) VALUES ('" . $username . "','" . $email . "','" . $password . "');";
+        //$sql2 = "INSERT INTO users (username,email, pass) VALUES ('" . $username . "','" . $email . "','" . $password . "');";
         mysqli_query($link, $sql2);
         echo '<script language="javascript">';
         echo 'alert("Sign up successfully.\nLogin now.\nAutomatically switch to login.")';
