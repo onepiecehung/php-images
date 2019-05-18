@@ -1,3 +1,120 @@
+<?php
+require_once "../includes/session.php";
+require_once "../includes/config.php";
+
+if (isset($_GET["id"])) {
+    $id_get = $_GET["id"];
+    //src="images/Images/014.jpg"
+    //TODO: code redrict
+    //TODO: get id image
+    $sql = 'SELECT *
+                FROM photos
+                WHERE id = ' . $id_get . '
+        ';
+    $result = $link->query($sql);
+    $row = mysqli_fetch_assoc($result);
+    $url = '
+            src="../images/' . $row["images_url"] . '"
+                ';
+    $download_image = '../images/' . $row["images_url"] . '';
+
+    //TODO:get username
+    $sql2 = 'SELECT *
+                FROM users
+                WHERE id = "' . $row["id_user"] . '";
+        ';
+    $result2 = $link->query($sql2);
+    $row2 = mysqli_fetch_assoc($result2);
+    //TODO: just for recommend
+} else {
+    $ids_get = $_GET["ids"];
+    $sql = 'SELECT *
+    FROM photos_any
+    WHERE id = ' . $ids_get . '
+';
+    $result = $link->query($sql);
+    $row = mysqli_fetch_assoc($result);
+    $url = '
+            src="../images/' . $row["images_url"] . '"
+            ';
+    $download_image = '../images/' . $row["images_url"] . '';
+}
+// else {
+//     echo '<script language="javascript">';
+//     echo 'alert("Nothing here.\nYou will be return home.\nThank you!")';
+//     echo '</script>';
+//     echo '<script language="javascript">';
+//     echo 'window.location.href = "../home/"';
+//     echo '</script>';
+// }
+
+//TODO: show images recommend
+
+// TODO: get last id> SELECT id FROM tablename ORDER BY id DESC LIMIT 1
+$sql_lastid = 'SELECT id FROM photos ORDER BY id DESC LIMIT 1';
+$result_lastid = $link->query($sql_lastid);
+$row_lastid = mysqli_fetch_assoc($result_lastid);
+$show_recommend = '';
+if ((int)$row_lastid["id"] > 10) {
+    $start_id = $row_lastid["id"] - 11;
+    $end_id = $row_lastid["id"] - 1;
+    $sql_show_recommend = 'SELECT * FROM photos 
+                    WHERE id between ' . $start_id . ' and ' . $end_id . '';
+    //$show_recommend = $sql_show_recommend;   
+    $result_recommend = $link->query($sql_show_recommend);
+    //$show_recommend = $result_recommend;
+    if (mysqli_num_rows($result_recommend) > 0) {
+        while ($row_r = mysqli_fetch_assoc($result_recommend)) {
+            $show_recommend = $show_recommend.'
+                    <div class="row ds-box">
+                        <div class="col-md-5 col-sm-12 dropdown">
+                            <img class="ds-thum" src="../images/' . $row_r["images_url"] . '" alt="" srcset="">
+                            <div class="dropdown-content">
+                                <img class="ds-thum-ho" src="../images/' . $row_r["images_url"] . '" alt="Cinque Terre">
+                                <div class="desc">' . $row_r["title"] . '</div>
+                            </div>
+                        </div>
+                        <div class="col-md-7 col-sm-12">
+                            <div class="d-flex text-right">' . $row_r["title"] . '</div>
+                            <div class="d-flex text-right">' ."666". '</div>
+                            <div class="d-flex text-right">' . mt_rand(150, 999) . '</div>
+                        </div>
+                    </div>   
+                    <div class="d-flex p-2"></div> 
+                ';
+        }
+    }
+} else {
+    //TODO: viet cho lastid < 10
+}
+
+
+$sql_recommend = 'SELECT *
+                    FROM photos
+                ';
+
+// <div class="row ds-box">
+// <div class="col-md-5 col-sm-12 dropdown">
+//     <img class="ds-thum" src="images/Images/36869222_804435913084696_1261595859506692096_n.jpg" alt="" srcset="">
+//     <div class="dropdown-content">
+//         <img class="ds-thum-ho" src="images/Images/36869222_804435913084696_1261595859506692096_n.jpg" alt="Cinque Terre">
+//         <div class="desc">Beautiful Cinque Terre</div>
+//     </div>
+// </div>
+// <div class="col-md-7 col-sm-12">
+//     <div class="d-flex text-right">title name fileaaa</div>
+//     <div class="d-flex text-right">Username</div>
+//     <div class="d-flex text-right">views</div>
+// </div>
+// </div>
+// <div class="d-flex p-2"></div>
+
+$link->close();
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,6 +132,31 @@
 </head>
 
 <body>
+    <nav class="navbar navbar-expand-lg Linear-Gradient-nav fixed-top fix-z-1">
+        <div class="container">
+            <a class="navbar-brand ds-hover nav-link" href="../home">
+                <img src="images/7.png" width="20" height="auto" alt="logo">
+                3RAW
+            </a>
+            <!--TODO:SEARCH-->
+            <div class="search-navbar" id="search-navbar">
+                <input class="" type="search" name="Search" id="search" placeholder="Search anything you need: images, #tag, @user, etc...">
+            </div>
+
+            <!--TODO:END SEARCH-->
+            <!--TODO: upload image-->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="nav navbar-nav ml-auto">
+                    <?php echo $log_reg; ?>
+                </ul>
+            </div>
+        </div>
+
+    </nav>
+    <div class="pt-5"></div>
     <!--TODO:This post-->
     <div class="container pt-3">
         <div class="row">
@@ -22,12 +164,23 @@
                 <div class="card transform-on-hover w-100">
                     <div class="card-header bg-transparent">
                         <img class="box-icon float-left" src="images/user.jpg" alt="" sizes="" srcset="">
-                        <a class="d-inline-flex p-2 ds-username-title" href="#">Username</a>
-                        <img class="d-inline-flex float-right p-2" src="images/more.png" alt="" srcset=""
-                            data-toggle="modal" data-target="#viewMore">
+                        <a class="d-inline-flex p-2 ds-username-title" href="#">
+                            <!-- //TODO: user here -->
+                            <?php
+                            if (isset($row2["username"])) {
+                                echo $row2["username"];
+                            } else {
+                                echo "Anonymous";
+                            }
+                            ?>
+                        </a>
+                        <img class="d-inline-flex float-right p-2" src="images/more.png" alt="" srcset="" data-toggle="modal" data-target="#viewMore">
                     </div>
                     <div class="card-body bg-transparent">
-                        <img class="card-img-top img-fluid" src="images/Images/014.jpg" alt="Card image cap">
+                        <img class="card-img-top img-fluid" <?php
+                                                            // TODO: IMAGE CENTER HERE
+                                                            echo $url;
+                                                            ?> alt="Card image cap">
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">
                                 <div class="row">
@@ -39,12 +192,17 @@
                                             data-target="#viewComment">
                                     </div> -->
                                     <div class="col-2">
-                                        <img id="love" src="images/paper-plane.png" data-toggle="modal"
-                                            data-target="#viewShare">
+                                        <img id="love" src="images/paper-plane.png" data-toggle="modal" data-target="#viewShare">
                                     </div>
                                 </div>
                             </li>
-                            <li class="list-group-item">User captions for this</li>
+                            <li class="list-group-item">
+
+                                <?php
+                                //TODO: caption here
+                                echo $row["title"];
+                                ?>
+                            </li>
 
                         </ul>
                     </div>
@@ -52,18 +210,18 @@
                 <!--TODO:THIS COMMENT DISQUE-->
                 <div id="disqus_thread"></div>
                 <script>
-
                     /**
-                    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-                    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+                     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+                     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
                     /*
                     var disqus_config = function () {
                     this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
                     this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
                     };
                     */
-                    (function () { // DON'T EDIT BELOW THIS LINE
-                        var d = document, s = d.createElement('script');
+                    (function() { // DON'T EDIT BELOW THIS LINE
+                        var d = document,
+                            s = d.createElement('script');
                         s.src = 'https://127-0-0-1-5500.disqus.com/embed.js';
                         s.setAttribute('data-timestamp', +new Date());
                         (d.head || d.body).appendChild(s);
@@ -75,14 +233,31 @@
             </div>
             <div class="col-md-4 col-sm-12">
                 <!--TODO: reconned-->
+                <h4 class="text-white text-center">Recommend for you</h4>
+                <div class="d-flex p-2"></div>
+                <?php
+                    //echo $show_recommend;
+                ?>
                 <div class="row ds-box">
                     <div class="col-md-5 col-sm-12 dropdown">
-                        <img class="ds-thum" src="images/Images/41382457_146220186311853_4229486198835380224_n.jpg"
-                            alt="" srcset="">
+                        <img class="ds-thum" src="images/Images/41382457_146220186311853_4229486198835380224_n.jpg" alt="" srcset="">
                         <div class="dropdown-content">
-                            <img class="ds-thum-ho"
-                                src="images/Images/41382457_146220186311853_4229486198835380224_n.jpg"
-                                alt="Cinque Terre">
+                            <img class="ds-thum-ho" src="images/Images/41382457_146220186311853_4229486198835380224_n.jpg" alt="Cinque Terre">
+                            <div class="desc">Beautiful Cinque Terre</div>
+                        </div>
+                    </div>
+                    <div class="col-md-7 col-sm-12">
+                        <div class="d-flex text-right">title name fileaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div>
+                        <div class="d-flex text-right">Username</div>
+                        <div class="d-flex text-right">views</div>
+                    </div>
+                </div>
+                <div class="d-flex p-2"></div>
+                <div class="row ds-box">
+                    <div class="col-md-5 col-sm-12 dropdown">
+                        <img class="ds-thum" src="images/Images/36869222_804435913084696_1261595859506692096_n.jpg" alt="" srcset="">
+                        <div class="dropdown-content">
+                            <img class="ds-thum-ho" src="images/Images/36869222_804435913084696_1261595859506692096_n.jpg" alt="Cinque Terre">
                             <div class="desc">Beautiful Cinque Terre</div>
                         </div>
                     </div>
@@ -95,12 +270,9 @@
                 <div class="d-flex p-2"></div>
                 <div class="row ds-box">
                     <div class="col-md-5 col-sm-12 dropdown">
-                        <img class="ds-thum" src="images/Images/36869222_804435913084696_1261595859506692096_n.jpg"
-                            alt="" srcset="">
+                        <img class="ds-thum" src="images/Images/37785770_1873636492693084_3196543214072889344_n.jpg" alt="" srcset="">
                         <div class="dropdown-content">
-                            <img class="ds-thum-ho"
-                                src="images/Images/36869222_804435913084696_1261595859506692096_n.jpg"
-                                alt="Cinque Terre">
+                            <img class="ds-thum-ho" src="images/Images/37785770_1873636492693084_3196543214072889344_n.jpg" alt="Cinque Terre">
                             <div class="desc">Beautiful Cinque Terre</div>
                         </div>
                     </div>
@@ -113,12 +285,9 @@
                 <div class="d-flex p-2"></div>
                 <div class="row ds-box">
                     <div class="col-md-5 col-sm-12 dropdown">
-                        <img class="ds-thum" src="images/Images/37785770_1873636492693084_3196543214072889344_n.jpg"
-                            alt="" srcset="">
+                        <img class="ds-thum" src="images/Images/38122075_2473333659559664_5135070793247490048_n.jpg" alt="" srcset="">
                         <div class="dropdown-content">
-                            <img class="ds-thum-ho"
-                                src="images/Images/37785770_1873636492693084_3196543214072889344_n.jpg"
-                                alt="Cinque Terre">
+                            <img class="ds-thum-ho" src="images/Images/38122075_2473333659559664_5135070793247490048_n.jpg" alt="Cinque Terre">
                             <div class="desc">Beautiful Cinque Terre</div>
                         </div>
                     </div>
@@ -131,12 +300,9 @@
                 <div class="d-flex p-2"></div>
                 <div class="row ds-box">
                     <div class="col-md-5 col-sm-12 dropdown">
-                        <img class="ds-thum" src="images/Images/38122075_2473333659559664_5135070793247490048_n.jpg"
-                            alt="" srcset="">
+                        <img class="ds-thum" src="images/Images/38286842_2208205976128564_5196688983941185536_n.jpg" alt="" srcset="">
                         <div class="dropdown-content">
-                            <img class="ds-thum-ho"
-                                src="images/Images/38122075_2473333659559664_5135070793247490048_n.jpg"
-                                alt="Cinque Terre">
+                            <img class="ds-thum-ho" src="images/Images/38286842_2208205976128564_5196688983941185536_n.jpg" alt="Cinque Terre">
                             <div class="desc">Beautiful Cinque Terre</div>
                         </div>
                     </div>
@@ -149,12 +315,9 @@
                 <div class="d-flex p-2"></div>
                 <div class="row ds-box">
                     <div class="col-md-5 col-sm-12 dropdown">
-                        <img class="ds-thum" src="images/Images/38286842_2208205976128564_5196688983941185536_n.jpg"
-                            alt="" srcset="">
+                        <img class="ds-thum" src="images/Images/40276239_2015686185117274_7806142668668403712_n.jpg" alt="" srcset="">
                         <div class="dropdown-content">
-                            <img class="ds-thum-ho"
-                                src="images/Images/38286842_2208205976128564_5196688983941185536_n.jpg"
-                                alt="Cinque Terre">
+                            <img class="ds-thum-ho" src="images/Images/40276239_2015686185117274_7806142668668403712_n.jpg" alt="Cinque Terre">
                             <div class="desc">Beautiful Cinque Terre</div>
                         </div>
                     </div>
@@ -167,12 +330,9 @@
                 <div class="d-flex p-2"></div>
                 <div class="row ds-box">
                     <div class="col-md-5 col-sm-12 dropdown">
-                        <img class="ds-thum" src="images/Images/40276239_2015686185117274_7806142668668403712_n.jpg"
-                            alt="" srcset="">
+                        <img class="ds-thum" src="images/Images/40392923_1088291627987082_6888239227583070208_n.jpg" alt="" srcset="">
                         <div class="dropdown-content">
-                            <img class="ds-thum-ho"
-                                src="images/Images/40276239_2015686185117274_7806142668668403712_n.jpg"
-                                alt="Cinque Terre">
+                            <img class="ds-thum-ho" src="images/Images/40392923_1088291627987082_6888239227583070208_n.jpg" alt="Cinque Terre">
                             <div class="desc">Beautiful Cinque Terre</div>
                         </div>
                     </div>
@@ -185,30 +345,9 @@
                 <div class="d-flex p-2"></div>
                 <div class="row ds-box">
                     <div class="col-md-5 col-sm-12 dropdown">
-                        <img class="ds-thum" src="images/Images/40392923_1088291627987082_6888239227583070208_n.jpg"
-                            alt="" srcset="">
+                        <img class="ds-thum" src="images/Images/40442042_1066691580147412_7431571904995000320_n.jpg" alt="" srcset="">
                         <div class="dropdown-content">
-                            <img class="ds-thum-ho"
-                                src="images/Images/40392923_1088291627987082_6888239227583070208_n.jpg"
-                                alt="Cinque Terre">
-                            <div class="desc">Beautiful Cinque Terre</div>
-                        </div>
-                    </div>
-                    <div class="col-md-7 col-sm-12">
-                        <div class="d-flex text-right">title name fileaaa</div>
-                        <div class="d-flex text-right">Username</div>
-                        <div class="d-flex text-right">views</div>
-                    </div>
-                </div>
-                <div class="d-flex p-2"></div>
-                <div class="row ds-box">
-                    <div class="col-md-5 col-sm-12 dropdown">
-                        <img class="ds-thum" src="images/Images/40442042_1066691580147412_7431571904995000320_n.jpg"
-                            alt="" srcset="">
-                        <div class="dropdown-content">
-                            <img class="ds-thum-ho"
-                                src="images/Images/40442042_1066691580147412_7431571904995000320_n.jpg"
-                                alt="Cinque Terre">
+                            <img class="ds-thum-ho" src="images/Images/40442042_1066691580147412_7431571904995000320_n.jpg" alt="Cinque Terre">
                             <div class="desc">Beautiful Cinque Terre</div>
                         </div>
                     </div>
@@ -223,8 +362,7 @@
     </div>
     <!--TODO: This view more-->
     <!-- Modal -->
-    <div class="modal fade" id="viewMore" tabindex="-1" role="dialog" aria-labelledby="viewMoreCenterTitle"
-        aria-hidden="true">
+    <div class="modal fade" id="viewMore" tabindex="-1" role="dialog" aria-labelledby="viewMoreCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-body">
@@ -236,7 +374,12 @@
                             Go to Post
                         </li>
                         <li class="ds-hover-modal list-group-item">Copy url</li>
-                        <li class="ds-hover-modal list-group-item">Download
+                        <li class="ds-hover-modal list-group-item">
+                            <a <?php
+                                echo 'href="' . $download_image . '"';
+                                ?>>
+                                Download
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -245,8 +388,7 @@
     </div>
     <!--TODO: This share-->
     <!-- Modal -->
-    <div class="modal fade" id="viewShare" tabindex="-1" role="dialog" aria-labelledby="viewShareCenterTitle"
-        aria-hidden="true">
+    <div class="modal fade" id="viewShare" tabindex="-1" role="dialog" aria-labelledby="viewShareCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-body">
@@ -271,6 +413,12 @@
             </div>
         </div>
     </div>
+    <!--TODO: That's button upload-->
+    <a href="upload.php">
+        <div class="ds-upload position-fixed">
+            <button class="" id="login" type=""> <img src="images/photo.png" alt="" srcset=""> Upload</button>
+        </div>
+    </a>
     <!--TODO: This comment-->
     <!-- Modal -->
     <!-- <div class="modal fade" id="viewComment" tabindex="-1" role="dialog" aria-labelledby="viewCommentCenterTitle"
