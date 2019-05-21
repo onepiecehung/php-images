@@ -1,6 +1,68 @@
-<!-- TODO: <?php echo htmlentities($result->email); ?> -->
 <?php
 require_once "../includes/session.php";
+require_once "../includes/config.php";
+$show_content='';
+$sql_lastid = 'SELECT id FROM photos ORDER BY id DESC LIMIT 1';
+$result_lastid = $link->query($sql_lastid);
+$row_lastid = mysqli_fetch_assoc($result_lastid);
+$start_id = 1;
+$end_id = $row_lastid["id"];
+$sql_show_recommend = 'SELECT * FROM photos 
+                WHERE id between ' . $start_id . ' and ' . $end_id . ' ORDER BY id DESC';  
+$result_recommend = $link->query($sql_show_recommend);
+if (mysqli_num_rows($result_recommend) > 0) {
+    while ($row_r = mysqli_fetch_assoc($result_recommend)) {
+        $sql_getid = 'SELECT * FROM users WHERE id=(SELECT id_user FROM photos WHERE id= ' . $row_r["id"] . ') ';
+        $result_getid = $link->query($sql_getid);
+        $row_getid = mysqli_fetch_assoc($result_getid);
+        $show_content=$show_content.'
+            <div class="col-md-12 col-lg-3 pt-4 item">
+                <div class="card ds-card">
+                    <a class="lightbox" href="../home/newsfeed.php?id=' . $row_r["id"] . '">
+                        <img class="img-fluid image scale-on-hover box-profile" src="../images/' . $row_r["images_url"] . '">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">' . $row_r["title"] . '</h5>
+                        <p class="card-text">ID#' . $row_r["id"] . ' Upload by 
+                        <a href="../home/profile.php?id='.$row_getid["id"].'">
+                        '.$row_getid["username"].'</a></p>
+                    </div>
+                </div>
+            </div>          
+        ';
+    }
+}
+
+$show_random='<a href="../home/newsfeed.php?id='.mt_rand(1, $end_id).'" class="Linear-Gradient list-group-item list-group-item-action text-white">
+<img class="pr-2 rounded float-left" src="images/sidebar/random.png" alt="Random">
+Random</a>';
+// ! todo: HOW TO FIX ADD LINK DONT WORKING ON OWL COURSES
+$sql_slide = 'SELECT * FROM photos 
+                WHERE id between 1 and 10 ORDER BY id DESC'; 
+$result_slide = $link->query($sql_slide);
+$show_silde='';
+if (mysqli_num_rows($result_recommend) > 0) {
+    while ($row_r1 = mysqli_fetch_assoc($result_slide)) {
+        $show_silde=$show_silde.'
+                <div class="owl-item">
+                    <img class="ds-owl-box img-thumbnail" src="../images/'.$row_r1["images_url"].'" alt="" srcset="">
+                </div>';
+    }
+}//TODO:href="../home/newsfeed.php?id=' . $row_r1["id"] . '"
+// <div class="owl-item">
+//     <img class="ds-owl-box img-thumbnail" src="images/Images/006.jpg" alt="" srcset="">
+// </div>
+// <div class="col-md-12 col-lg-2 item">
+// <div class="card ds-card">
+//     <a class="lightbox" href="../img/image1.jpg">
+//         <img class="img-fluid image scale-on-hover" src="../img/image1.jpg">
+//     </a>
+//     <div class="card-body">
+//         <h5 class="card-title">Title</h5>
+//         <p class="card-text">Content</p>
+//     </div>
+// </div>
+// </div>
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,6 +83,7 @@ require_once "../includes/session.php";
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Merriweather:400,900,900i" rel="stylesheet">
     <!-- <link rel="stylesheet" href="css/footer.css"> -->
+
 </head>
 
 <body>
@@ -32,7 +95,7 @@ require_once "../includes/session.php";
         <div class="Linear-Gradient bg-light border-right position-fixed ds-fix-1" id="sidebar-wrapper">
             <div class="list-group list-group-flush">
                 <b>
-                    <a href="#" class="Linear-Gradient list-group-item list-group-item-action text-white">
+                    <a href="../home/" class="Linear-Gradient list-group-item list-group-item-action text-white">
                         <img class="pr-2 rounded float-left" src="images/sidebar/home.png" alt="home">Home
                         <img class="rounded float-right ds-hover" src="images/unchecked.png" id="menu-toggle">
                     </a>
@@ -42,11 +105,10 @@ require_once "../includes/session.php";
                     <a href="#" class="Linear-Gradient list-group-item list-group-item-action text-white">
                         <img class="pr-2 rounded float-left" src="images/sidebar/follow.png" alt="Follow">
                         Following</a>
-                    <a href="#" class="Linear-Gradient list-group-item list-group-item-action text-white">
-                        <img class="pr-2 rounded float-left" src="images/sidebar/random.png" alt="Random">
-                        Random</a>
-                    <a href="#" class="Linear-Gradient list-group-item list-group-item-action text-white">Profile</a>
-                    <a href="#" class="Linear-Gradient list-group-item list-group-item-action text-white">Status</a>
+                    <?php
+                        //TODO: show random
+                        echo $show_random;
+                    ?>
                 </b>
             </div>
         </div>
@@ -56,7 +118,7 @@ require_once "../includes/session.php";
     <nav class="navbar navbar-expand-lg Linear-Gradient-nav fixed-top fix-z-1">
 
         <img class="ds-hover-icon rounded navbar-brand ml-4" src="images/list.png" id="menu-toggle-both" style="width:22px;height:auto;">
-        <a class="navbar-brand ds-hover nav-link" href="../home">
+        <a class="navbar-brand ds-hover nav-link" href="../home/">
             <img src="images/7.png" width="20" height="auto" alt="logo">
             3RAW
         </a>
@@ -82,42 +144,9 @@ require_once "../includes/session.php";
         <div class="owl-carousel owl-theme owl-loaded owl-fix">
             <div class="owl-stage-outer">
                 <div class="owl-stage">
-                    <div class="owl-item">
-                        <img class="ds-owl-box img-thumbnail" src="images/Images/006.jpg" alt="" srcset="">
-                    </div>
-                    <div class="owl-item">
-                        <img class="ds-owl-box img-thumbnail" src="images/Images/014.jpg" alt="" srcset="">
-                    </div>
-                    <div class="owl-item">
-                        <img class="ds-owl-box img-thumbnail" src="images/Images/10.jpg" alt="" srcset="">
-                    </div>
-                    <div class="owl-item">
-                        <img class="ds-owl-box img-thumbnail" src="images/Images/40534920_1920181574799697_4874050589694099456_n.jpg" alt="" srcset="">
-                    </div>
-                    <div class="owl-item">
-                        <img class="ds-owl-box img-thumbnail" src="images/Images/41111462_265972034028025_1466627333245894656_n.jpg" alt="" srcset="">
-                    </div>
-                    <div class="owl-item">
-                        <img class="ds-owl-box img-thumbnail" src="images/Images/41270698_2075618492461882_8864347173597216768_n.jpg" alt="" srcset="">
-                    </div>
-                    <div class="owl-item">
-                        <img class="ds-owl-box img-thumbnail" src="images/Images/41368502_2053692934940900_597907040135806976_n.jpg" alt="" srcset="">
-                    </div>
-                    <div class="owl-item">
-                        <img class="ds-owl-box img-thumbnail" src="images/Images/41380304_1458535600956711_6812352777574940672_n.jpg" alt="" srcset="">
-                    </div>
-                    <div class="owl-item">
-                        <img class="ds-owl-box img-thumbnail" src="images/Images/41382457_146220186311853_4229486198835380224_n.jpg" alt="" srcset="">
-                    </div>
-                    <div class="owl-item">
-                        <img class="ds-owl-box img-thumbnail" src="images/Images/41388443_1096891320466326_449729117940613120_n.jpg" alt="" srcset="">
-                    </div>
-                    <div class="owl-item">
-                        <img class="ds-owl-box img-thumbnail" src="images/Images/41410692_2656379547920465_4043706546633310208_n.jpg" alt="" srcset="">
-                    </div>
-                    <div class="owl-item">
-                        <img class="ds-owl-box img-thumbnail" src="images/Images/41421615_1096891283799663_6699789115040202752_n.jpg" alt="" srcset="">
-                    </div>
+                   <?php
+                        echo $show_silde;
+                   ?>
                 </div>
             </div>
         </div>
@@ -127,441 +156,19 @@ require_once "../includes/session.php";
     </header>
 
     <!--TODO:Content-->
+    <div class="pt-5"></div>
+    <div class="pt-5"></div>
     <section class="gallery-block grid-gallery">
         <div class="row">
-            <div class="col-1"></div>
-            <div class="col-10">
+            <div class="col-2"></div>
+            <div class="col-8">
                 <div class="row">
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image1.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image1.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
+                    <?php
+                        echo $show_content;
+                    ?>
 
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image2.jpg">
-                                <img class="img-fluid image" src="../img/image2.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image3.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image3.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image4.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image4.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image5.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image5.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image6.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image6.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image7.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image7.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image8.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image8.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image9.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image9.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image1.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image1.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image2.jpg">
-                                <img class="img-fluid image" src="../img/image2.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image3.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image3.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image4.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image4.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image5.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image5.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image6.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image6.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image7.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image7.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image8.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image8.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image9.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image9.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image1.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image1.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image2.jpg">
-                                <img class="img-fluid image" src="../img/image2.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image3.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image3.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image4.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image4.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image5.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image5.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image6.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image6.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image7.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image7.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image8.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image8.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image9.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image9.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image1.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image1.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image2.jpg">
-                                <img class="img-fluid image" src="../img/image2.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image3.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image3.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image4.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image4.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image5.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image5.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image6.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image6.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image7.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image7.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image8.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image8.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12 col-lg-2 item">
-                        <div class="card ds-card">
-                            <a class="lightbox" href="../img/image9.jpg">
-                                <img class="img-fluid image scale-on-hover" src="../img/image9.jpg">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">Title</h5>
-                                <p class="card-text">Content</p>
-                            </div>
-                        </div>
-
-                    </div>
                 </div>
-                <div class="col-1">
+                <div class="col-2">
 
                 </div>
             </div>

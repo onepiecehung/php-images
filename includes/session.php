@@ -5,7 +5,7 @@ $log_reg = '';
 if (isset($_SESSION["username"])) {
     $log_reg = '
             <li class="ds-hover nav-item text-white">
-                <a class="nav-link pl-1" href="#">Hello: ' . $_SESSION["username"] . '</a>
+                <a class="nav-link pl-1" href="../home/profile.php?id='.$_SESSION["id"].'">Hello: ' . $_SESSION["username"] . '</a>
             </li>
             <li class="ds-hover nav-item text-white">
                 <a class="nav-link" href="../logout.php">Logout</a>

@@ -56,7 +56,46 @@ $result_lastid = $link->query($sql_lastid);
 $row_lastid = mysqli_fetch_assoc($result_lastid);
 $show_recommend = '';
 if ((int)$row_lastid["id"] > 10) {
-    $start_id = $row_lastid["id"] - 11;
+    $start_id = $row_lastid["id"] - 10;
+    $end_id = $row_lastid["id"] - 1;
+    $sql_show_recommend = 'SELECT * FROM photos 
+                    WHERE id between ' . $start_id . ' and ' . $end_id . ' ORDER BY id DESC';
+    //$show_recommend = $sql_show_recommend;   
+    $result_recommend = $link->query($sql_show_recommend);
+    //$show_recommend = $result_recommend;
+    if (mysqli_num_rows($result_recommend) > 0) {
+        while ($row_r = mysqli_fetch_assoc($result_recommend)) {
+            //TODO: SELECT * FROM users WHERE id=(SELECT id_user FROM photos WHERE id= 1)
+            $sql_getid = 'SELECT * FROM users WHERE id=(SELECT id_user FROM photos WHERE id= ' . $row_r["id"] . ') ';
+            $result_getid = $link->query($sql_getid);
+            $row_getid = mysqli_fetch_assoc($result_getid);
+            $show_recommend = $show_recommend . '
+                    
+                    <div class="row ds-box">
+                        <div class="col-md-5 col-sm-12 dropdown">
+                            <a href="../home/newsfeed.php?id=' . $row_r["id"] . '">
+                                <img class="ds-thum" src="../images/' . $row_r["images_url"] . '" alt="" srcset="">
+                            <div class="dropdown-content">
+                                <img class="ds-thum-ho" src="../images/' . $row_r["images_url"] . '" alt="Cinque Terre">
+                                <div class="desc">' . $row_r["title"] . '</div>
+                            </div>
+                        </div>
+                        <div class="col-md-7 col-sm-12">
+                            <div class="d-flex text-right">' . $row_r["title"] . '</div>
+                            </a>
+                            <a href="../home/profile.php?id=' . $row_getid["id"] . '">
+                                <div class="d-flex text-right">By ' . $row_getid["username"] . '</div>
+                            </a>
+                            <div class="d-flex text-right">' . mt_rand(150, 999) . ' Views</div>
+                        </div>
+                    </div>   
+                    <div class="d-flex p-2"></div> 
+                    ';
+        }
+    }
+} else {
+    //TODO: viet cho lastid < 10
+    $start_id = 1;
     $end_id = $row_lastid["id"] - 1;
     $sql_show_recommend = 'SELECT * FROM photos 
                     WHERE id between ' . $start_id . ' and ' . $end_id . '';
@@ -65,27 +104,33 @@ if ((int)$row_lastid["id"] > 10) {
     //$show_recommend = $result_recommend;
     if (mysqli_num_rows($result_recommend) > 0) {
         while ($row_r = mysqli_fetch_assoc($result_recommend)) {
-            $show_recommend = $show_recommend.'
-                    <div class="row ds-box">
-                        <div class="col-md-5 col-sm-12 dropdown">
+            //TODO: SELECT * FROM users WHERE id=(SELECT id_user FROM photos WHERE id= 1)
+            $sql_getid = 'SELECT * FROM users WHERE id=(SELECT id_user FROM photos WHERE id= ' . $row_r["id"] . ') ';
+            $result_getid = $link->query($sql_getid);
+            $row_getid = mysqli_fetch_assoc($result_getid);
+            $show_recommend = $show_recommend . '  
+                <div class="row ds-box">
+                    <div class="col-md-5 col-sm-12 dropdown">
+                        <a href="../home/newsfeed.php?id=' . $row_r["id"] . '">
                             <img class="ds-thum" src="../images/' . $row_r["images_url"] . '" alt="" srcset="">
-                            <div class="dropdown-content">
-                                <img class="ds-thum-ho" src="../images/' . $row_r["images_url"] . '" alt="Cinque Terre">
-                                <div class="desc">' . $row_r["title"] . '</div>
-                            </div>
+                        <div class="dropdown-content">
+                            <img class="ds-thum-ho" src="../images/' . $row_r["images_url"] . '" alt="Cinque Terre">
+                            <div class="desc">' . $row_r["title"] . '</div>
                         </div>
-                        <div class="col-md-7 col-sm-12">
-                            <div class="d-flex text-right">' . $row_r["title"] . '</div>
-                            <div class="d-flex text-right">' ."666". '</div>
-                            <div class="d-flex text-right">' . mt_rand(150, 999) . '</div>
-                        </div>
-                    </div>   
-                    <div class="d-flex p-2"></div> 
+                    </div>
+                    <div class="col-md-7 col-sm-12">
+                        <div class="d-flex text-right">' . $row_r["title"] . '</div>
+                        </a>
+                        <a href="../home/profile.php?id=' . $row_getid["id"] . '">
+                            <div class="d-flex text-right">By ' . $row_getid["username"] . '</div>
+                        </a>
+                        <div class="d-flex text-right">' . mt_rand(150, 999) . ' Views</div>
+                    </div>
+                </div>   
+                <div class="d-flex p-2"></div> 
                 ';
         }
     }
-} else {
-    //TODO: viet cho lastid < 10
 }
 
 
@@ -132,6 +177,7 @@ $link->close();
 </head>
 
 <body>
+
     <nav class="navbar navbar-expand-lg Linear-Gradient-nav fixed-top fix-z-1">
         <div class="container">
             <a class="navbar-brand ds-hover nav-link" href="../home">
@@ -168,7 +214,8 @@ $link->close();
                             <!-- //TODO: user here -->
                             <?php
                             if (isset($row2["username"])) {
-                                echo $row2["username"];
+                                $showuser = '<a style="font-size: 25px" href="../home/profile.php?id='.$row2["id"].'">'.$row2["username"].'</a>';
+                                echo $showuser;
                             } else {
                                 echo "Anonymous";
                             }
@@ -236,127 +283,8 @@ $link->close();
                 <h4 class="text-white text-center">Recommend for you</h4>
                 <div class="d-flex p-2"></div>
                 <?php
-                    //echo $show_recommend;
+                echo $show_recommend;
                 ?>
-                <div class="row ds-box">
-                    <div class="col-md-5 col-sm-12 dropdown">
-                        <img class="ds-thum" src="images/Images/41382457_146220186311853_4229486198835380224_n.jpg" alt="" srcset="">
-                        <div class="dropdown-content">
-                            <img class="ds-thum-ho" src="images/Images/41382457_146220186311853_4229486198835380224_n.jpg" alt="Cinque Terre">
-                            <div class="desc">Beautiful Cinque Terre</div>
-                        </div>
-                    </div>
-                    <div class="col-md-7 col-sm-12">
-                        <div class="d-flex text-right">title name fileaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div>
-                        <div class="d-flex text-right">Username</div>
-                        <div class="d-flex text-right">views</div>
-                    </div>
-                </div>
-                <div class="d-flex p-2"></div>
-                <div class="row ds-box">
-                    <div class="col-md-5 col-sm-12 dropdown">
-                        <img class="ds-thum" src="images/Images/36869222_804435913084696_1261595859506692096_n.jpg" alt="" srcset="">
-                        <div class="dropdown-content">
-                            <img class="ds-thum-ho" src="images/Images/36869222_804435913084696_1261595859506692096_n.jpg" alt="Cinque Terre">
-                            <div class="desc">Beautiful Cinque Terre</div>
-                        </div>
-                    </div>
-                    <div class="col-md-7 col-sm-12">
-                        <div class="d-flex text-right">title name fileaaa</div>
-                        <div class="d-flex text-right">Username</div>
-                        <div class="d-flex text-right">views</div>
-                    </div>
-                </div>
-                <div class="d-flex p-2"></div>
-                <div class="row ds-box">
-                    <div class="col-md-5 col-sm-12 dropdown">
-                        <img class="ds-thum" src="images/Images/37785770_1873636492693084_3196543214072889344_n.jpg" alt="" srcset="">
-                        <div class="dropdown-content">
-                            <img class="ds-thum-ho" src="images/Images/37785770_1873636492693084_3196543214072889344_n.jpg" alt="Cinque Terre">
-                            <div class="desc">Beautiful Cinque Terre</div>
-                        </div>
-                    </div>
-                    <div class="col-md-7 col-sm-12">
-                        <div class="d-flex text-right">title name fileaaa</div>
-                        <div class="d-flex text-right">Username</div>
-                        <div class="d-flex text-right">views</div>
-                    </div>
-                </div>
-                <div class="d-flex p-2"></div>
-                <div class="row ds-box">
-                    <div class="col-md-5 col-sm-12 dropdown">
-                        <img class="ds-thum" src="images/Images/38122075_2473333659559664_5135070793247490048_n.jpg" alt="" srcset="">
-                        <div class="dropdown-content">
-                            <img class="ds-thum-ho" src="images/Images/38122075_2473333659559664_5135070793247490048_n.jpg" alt="Cinque Terre">
-                            <div class="desc">Beautiful Cinque Terre</div>
-                        </div>
-                    </div>
-                    <div class="col-md-7 col-sm-12">
-                        <div class="d-flex text-right">title name fileaaa</div>
-                        <div class="d-flex text-right">Username</div>
-                        <div class="d-flex text-right">views</div>
-                    </div>
-                </div>
-                <div class="d-flex p-2"></div>
-                <div class="row ds-box">
-                    <div class="col-md-5 col-sm-12 dropdown">
-                        <img class="ds-thum" src="images/Images/38286842_2208205976128564_5196688983941185536_n.jpg" alt="" srcset="">
-                        <div class="dropdown-content">
-                            <img class="ds-thum-ho" src="images/Images/38286842_2208205976128564_5196688983941185536_n.jpg" alt="Cinque Terre">
-                            <div class="desc">Beautiful Cinque Terre</div>
-                        </div>
-                    </div>
-                    <div class="col-md-7 col-sm-12">
-                        <div class="d-flex text-right">title name fileaaa</div>
-                        <div class="d-flex text-right">Username</div>
-                        <div class="d-flex text-right">views</div>
-                    </div>
-                </div>
-                <div class="d-flex p-2"></div>
-                <div class="row ds-box">
-                    <div class="col-md-5 col-sm-12 dropdown">
-                        <img class="ds-thum" src="images/Images/40276239_2015686185117274_7806142668668403712_n.jpg" alt="" srcset="">
-                        <div class="dropdown-content">
-                            <img class="ds-thum-ho" src="images/Images/40276239_2015686185117274_7806142668668403712_n.jpg" alt="Cinque Terre">
-                            <div class="desc">Beautiful Cinque Terre</div>
-                        </div>
-                    </div>
-                    <div class="col-md-7 col-sm-12">
-                        <div class="d-flex text-right">title name fileaaa</div>
-                        <div class="d-flex text-right">Username</div>
-                        <div class="d-flex text-right">views</div>
-                    </div>
-                </div>
-                <div class="d-flex p-2"></div>
-                <div class="row ds-box">
-                    <div class="col-md-5 col-sm-12 dropdown">
-                        <img class="ds-thum" src="images/Images/40392923_1088291627987082_6888239227583070208_n.jpg" alt="" srcset="">
-                        <div class="dropdown-content">
-                            <img class="ds-thum-ho" src="images/Images/40392923_1088291627987082_6888239227583070208_n.jpg" alt="Cinque Terre">
-                            <div class="desc">Beautiful Cinque Terre</div>
-                        </div>
-                    </div>
-                    <div class="col-md-7 col-sm-12">
-                        <div class="d-flex text-right">title name fileaaa</div>
-                        <div class="d-flex text-right">Username</div>
-                        <div class="d-flex text-right">views</div>
-                    </div>
-                </div>
-                <div class="d-flex p-2"></div>
-                <div class="row ds-box">
-                    <div class="col-md-5 col-sm-12 dropdown">
-                        <img class="ds-thum" src="images/Images/40442042_1066691580147412_7431571904995000320_n.jpg" alt="" srcset="">
-                        <div class="dropdown-content">
-                            <img class="ds-thum-ho" src="images/Images/40442042_1066691580147412_7431571904995000320_n.jpg" alt="Cinque Terre">
-                            <div class="desc">Beautiful Cinque Terre</div>
-                        </div>
-                    </div>
-                    <div class="col-md-7 col-sm-12">
-                        <div class="d-flex text-right">title name fileaaa</div>
-                        <div class="d-flex text-right">Username</div>
-                        <div class="d-flex text-right">views</div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
