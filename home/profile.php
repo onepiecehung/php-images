@@ -17,7 +17,10 @@ $result_showphotoid = $link->query($sql_showphotoid);
 if (mysqli_num_rows($result_showphotoid) > 0) {
     while ($row_showphotoid = mysqli_fetch_assoc($result_showphotoid)) {
         if (isset($_SESSION['id']) && $_SESSION['id'] ==  $row_showusername["id"]) {
-            $showphotoid = $showphotoid . '
+            if ($row_showphotoid["status_photo"] == 0 || $row_showphotoid["status_photo"] == 1) {
+
+
+                $showphotoid = $showphotoid . '
             <div class="col-md-12 col-lg-4 col-md-3 pt-4 item">
                 <div class="card ds-card">
                     <a class="lightbox" href="../home/newsfeed.php?id=' . $row_showphotoid["id"] . '">
@@ -25,7 +28,14 @@ if (mysqli_num_rows($result_showphotoid) > 0) {
                     </a>
                     <div class="card-body">
                         <h5 class="card-title">' . $row_showphotoid["title"] . '</h5>
-                        <p class="card-text">ID#' . $row_showphotoid["id"] . '</p>
+                        <p class="card-text">ID#' . $row_showphotoid["id"] . '</p>';
+                if ($row_showphotoid["status_photo"] == 0) {
+                    $showphotoid = $showphotoid . '<p class="card-text">Waiting for verify. <img src="images/delete.png" alt="" srcset=""></p>';
+                } elseif ($row_showphotoid["status_photo"] == 1) {
+                    $showphotoid = $showphotoid . '<p class="card-text">Verify by Admin <img src="images/check-mark.png" alt="" srcset=""></p>';
+                }
+
+                $showphotoid = $showphotoid . '            
                         <div class="text-center">
                             <a href="deletephoto.php?id=' . $row_showphotoid["id"] . '">
                                 <button type="button" class="btn btn-danger" onclick="clickDel();">Delete</button>
@@ -38,6 +48,7 @@ if (mysqli_num_rows($result_showphotoid) > 0) {
                 </div>
             </div>
         ';
+            }
         } else {
             $showphotoid = $showphotoid . '
             <div class="col-md-12 col-lg-4 col-md-3 pt-4 item">

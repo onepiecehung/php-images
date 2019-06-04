@@ -1,54 +1,64 @@
 <?php
 require_once "../includes/session.php";
 require_once "../includes/config.php";
-$show_content='';
+$show_content = '';
 $sql_lastid = 'SELECT id FROM photos ORDER BY id DESC LIMIT 1';
 $result_lastid = $link->query($sql_lastid);
 $row_lastid = mysqli_fetch_assoc($result_lastid);
 $start_id = 1;
 $end_id = $row_lastid["id"];
 $sql_show_recommend = 'SELECT * FROM photos 
-                WHERE id between ' . $start_id . ' and ' . $end_id . ' ORDER BY id DESC';  
+                WHERE id between ' . $start_id . ' and ' . $end_id . ' ORDER BY id DESC';
 $result_recommend = $link->query($sql_show_recommend);
 if (mysqli_num_rows($result_recommend) > 0) {
     while ($row_r = mysqli_fetch_assoc($result_recommend)) {
         $sql_getid = 'SELECT * FROM users WHERE id=(SELECT id_user FROM photos WHERE id= ' . $row_r["id"] . ') ';
         $result_getid = $link->query($sql_getid);
         $row_getid = mysqli_fetch_assoc($result_getid);
-        $show_content=$show_content.'
-            <div class="col-md-12 col-lg-3 pt-4 item">
+        if ($row_r["status_photo"] == 1) {
+            $show_content = $show_content . '
+            <div class="col-md-12 col-lg-4 pt-4 item">
                 <div class="card ds-card">
                     <a class="lightbox" href="../home/newsfeed.php?id=' . $row_r["id"] . '">
                         <img class="img-fluid image scale-on-hover box-profile" src="../images/' . $row_r["images_url"] . '">
                     </a>
                     <div class="card-body">
-                        <h5 class="card-title">' . $row_r["title"] . '</h5>
+                        <h5 class="card-title">' . $row_r["title"] . '</h5>';
+            if ($row_r["status_photo"] == 0) {
+                $show_content = $show_content . '<p class="card-text">Waiting for verify. <img src="images/delete.png" alt="" srcset=""></p>';
+            } elseif ($row_r["status_photo"] == 1) {
+                $show_content = $show_content . '<p class="card-text">Verify by Admin <img src="images/check-mark.png" alt="" srcset=""></p>';
+            }
+            $show_content = $show_content . '
                         <p class="card-text">ID#' . $row_r["id"] . ' Upload by 
-                        <a href="../home/profile.php?id='.$row_getid["id"].'">
-                        '.$row_getid["username"].'</a></p>
+                        <a href="../home/profile.php?id=' . $row_getid["id"] . '">
+                        ' . $row_getid["username"] . '</a></p>
                     </div>
                 </div>
             </div>          
         ';
+        }
     }
 }
 
-$show_random='<a href="../home/newsfeed.php?id='.mt_rand(1, $end_id).'" class="Linear-Gradient list-group-item list-group-item-action text-white">
+$show_random = '<a href="../home/newsfeed.php?id=' . mt_rand(1, $end_id) . '" class="Linear-Gradient list-group-item list-group-item-action text-white">
 <img class="pr-2 rounded float-left" src="images/sidebar/random.png" alt="Random">
 Random</a>';
 // ! todo: HOW TO FIX ADD LINK DONT WORKING ON OWL COURSES
 $sql_slide = 'SELECT * FROM photos 
-                WHERE id between 1 and 10 ORDER BY id DESC'; 
+                WHERE id between 1 and 10 ORDER BY id DESC';
 $result_slide = $link->query($sql_slide);
-$show_silde='';
+$show_silde = '';
 if (mysqli_num_rows($result_recommend) > 0) {
     while ($row_r1 = mysqli_fetch_assoc($result_slide)) {
-        $show_silde=$show_silde.'
+        $show_silde = $show_silde . '
                 <div class="owl-item">
-                    <img class="ds-owl-box img-thumbnail" src="../images/'.$row_r1["images_url"].'" alt="" srcset="">
+                    <a href="/home/newsfeed.php?id=' . $row_r1["id"] . '">
+                    <img class="ds-owl-box img-thumbnail" src="../images/' . $row_r1["images_url"] . '" alt="" srcset="">
+                    </a>
                 </div>';
     }
-}//TODO:href="../home/newsfeed.php?id=' . $row_r1["id"] . '"
+} //TODO:href="../home/newsfeed.php?id=' . $row_r1["id"] . '"
 // <div class="owl-item">
 //     <img class="ds-owl-box img-thumbnail" src="images/Images/006.jpg" alt="" srcset="">
 // </div>
@@ -68,6 +78,7 @@ if (mysqli_num_rows($result_recommend) > 0) {
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -106,8 +117,8 @@ if (mysqli_num_rows($result_recommend) > 0) {
                         <img class="pr-2 rounded float-left" src="images/sidebar/follow.png" alt="Follow">
                         Following</a>
                     <?php
-                        //TODO: show random
-                        echo $show_random;
+                    //TODO: show random
+                    echo $show_random;
                     ?>
                 </b>
             </div>
@@ -144,9 +155,9 @@ if (mysqli_num_rows($result_recommend) > 0) {
         <div class="owl-carousel owl-theme owl-loaded owl-fix">
             <div class="owl-stage-outer">
                 <div class="owl-stage">
-                   <?php
-                        echo $show_silde;
-                   ?>
+                    <?php
+                    echo $show_silde;
+                    ?>
                 </div>
             </div>
         </div>
@@ -156,21 +167,13 @@ if (mysqli_num_rows($result_recommend) > 0) {
     </header>
 
     <!--TODO:Content-->
-    <div class="pt-5"></div>
-    <div class="pt-5"></div>
+    <div class="pt-2"></div>
     <section class="gallery-block grid-gallery">
-        <div class="row">
-            <div class="col-2"></div>
-            <div class="col-8">
-                <div class="row">
-                    <?php
-                        echo $show_content;
-                    ?>
-
-                </div>
-                <div class="col-2">
-
-                </div>
+        <div class="container">
+            <div class="row">
+                <?php
+                echo $show_content;
+                ?>
             </div>
         </div>
 

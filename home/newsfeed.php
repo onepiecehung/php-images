@@ -70,7 +70,6 @@ if ((int)$row_lastid["id"] > 10) {
             $result_getid = $link->query($sql_getid);
             $row_getid = mysqli_fetch_assoc($result_getid);
             $show_recommend = $show_recommend . '
-                    
                     <div class="row ds-box">
                         <div class="col-md-5 col-sm-12 dropdown">
                             <a href="../home/newsfeed.php?id=' . $row_r["id"] . '">
@@ -86,6 +85,7 @@ if ((int)$row_lastid["id"] > 10) {
                             <a href="../home/profile.php?id=' . $row_getid["id"] . '">
                                 <div class="d-flex text-right">By ' . $row_getid["username"] . '</div>
                             </a>
+                            
                             <div class="d-flex text-right">' . mt_rand(150, 999) . ' Views</div>
                         </div>
                     </div>   
@@ -98,7 +98,7 @@ if ((int)$row_lastid["id"] > 10) {
     $start_id = 1;
     $end_id = $row_lastid["id"] - 1;
     $sql_show_recommend = 'SELECT * FROM photos 
-                    WHERE id between ' . $start_id . ' and ' . $end_id . '';
+                    WHERE id between ' . $start_id . ' and ' . $end_id . ' ORDER BY id DESC';
     //$show_recommend = $sql_show_recommend;   
     $result_recommend = $link->query($sql_show_recommend);
     //$show_recommend = $result_recommend;
@@ -124,6 +124,7 @@ if ((int)$row_lastid["id"] > 10) {
                         <a href="../home/profile.php?id=' . $row_getid["id"] . '">
                             <div class="d-flex text-right">By ' . $row_getid["username"] . '</div>
                         </a>
+                        
                         <div class="d-flex text-right">' . mt_rand(150, 999) . ' Views</div>
                     </div>
                 </div>   
@@ -167,7 +168,10 @@ $link->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>NewsFeed</title>
+    <title>NewsFeed - <?php
+                        //TODO: caption here
+                        echo $row["title"];
+                        ?></title>
     <link rel="stylesheet" href="css/owl/owl.carousel.min.css">
     <link rel="stylesheet" href="css/owl/owl.theme.default.min.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -214,7 +218,7 @@ $link->close();
                             <!-- //TODO: user here -->
                             <?php
                             if (isset($row2["username"])) {
-                                $showuser = '<a style="font-size: 25px" href="../home/profile.php?id='.$row2["id"].'">'.$row2["username"].'</a>';
+                                $showuser = '<a style="font-size: 25px" href="../home/profile.php?id=' . $row2["id"] . '">' . $row2["username"] . '</a>';
                                 echo $showuser;
                             } else {
                                 echo "Anonymous";
@@ -232,25 +236,39 @@ $link->close();
                             <li class="list-group-item">
                                 <div class="row">
                                     <div class="col-2">
-                                        <img id="love" src="images/hearts.png"> 121
+                                        <img id="love" src="images/hearts.png">
                                     </div>
                                     <!-- <div class="col-2">
                                         <img id="love" src="images/chat.png" data-toggle="modal"
                                             data-target="#viewComment">
                                     </div> -->
-                                    <div class="col-2">
+                                    <div class="col-9"></div>
+                                    <div class="col-1">
                                         <img id="love" src="images/paper-plane.png" data-toggle="modal" data-target="#viewShare">
                                     </div>
                                 </div>
                             </li>
                             <li class="list-group-item">
-
+                                Title:
                                 <?php
                                 //TODO: caption here
                                 echo $row["title"];
                                 ?>
                             </li>
-
+                            <li class="list-group-item">
+                                Description:
+                                <?php
+                                //TODO: caption here
+                                echo $row["images_description"];
+                                ?>
+                            </li>
+                            <?php
+                                if ($row["status_photo"] == 0) {
+                                    echo '<p class="list-group-item">Waiting for verify. <img src="images/delete.png" alt="" srcset=""></p>';
+                                } elseif ($row["status_photo"] == 1) {
+                                    echo '<p class="list-group-item">Verify by Admin <img src="images/check-mark.png" alt="" srcset=""></p>';
+                                }  
+                            ?>
                         </ul>
                     </div>
                 </div>
