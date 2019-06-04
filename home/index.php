@@ -23,7 +23,8 @@ if (mysqli_num_rows($result_recommend) > 0) {
                         <img class="img-fluid image scale-on-hover box-profile" src="../images/' . $row_r["images_url"] . '">
                     </a>
                     <div class="card-body">
-                        <h5 class="card-title">' . $row_r["title"] . '</h5>';
+                        <h5 class="card-title pt-3">Title: ' . $row_r["title"] . '</h5>
+                        <h5 class="card-title">Description: ' . $row_r["images_description"] . '</h5>';
             if ($row_r["status_photo"] == 0) {
                 $show_content = $show_content . '<p class="card-text">Waiting for verify. <img src="images/delete.png" alt="" srcset=""></p>';
             } elseif ($row_r["status_photo"] == 1) {
@@ -100,9 +101,9 @@ if (mysqli_num_rows($result_recommend) > 0) {
 <body>
     <!--TODO:Back to top-->
     <a id="button"></a>
-    <div class="d-flex" id="wrapper">
+    <!-- <div class="d-flex" id="wrapper">
 
-        <!-- Sidebar -->
+        <!-- Sidebar --
         <div class="Linear-Gradient bg-light border-right position-fixed ds-fix-1" id="sidebar-wrapper">
             <div class="list-group list-group-flush">
                 <b>
@@ -123,12 +124,12 @@ if (mysqli_num_rows($result_recommend) > 0) {
                 </b>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- /#sidebar-wrapper -->
     <!--TODO: This navigation-->
     <nav class="navbar navbar-expand-lg Linear-Gradient-nav fixed-top fix-z-1">
 
-        <img class="ds-hover-icon rounded navbar-brand ml-4" src="images/list.png" id="menu-toggle-both" style="width:22px;height:auto;">
+        <!-- <img class="ds-hover-icon rounded navbar-brand ml-4" src="images/list.png" id="menu-toggle-both" style="width:22px;height:auto;"> -->
         <a class="navbar-brand ds-hover nav-link" href="../home/">
             <img src="images/7.png" width="20" height="auto" alt="logo">
             3RAW
@@ -167,7 +168,8 @@ if (mysqli_num_rows($result_recommend) > 0) {
     </header>
 
     <!--TODO:Content-->
-    <div class="pt-2"></div>
+    <div class="pt-5"></div>
+    <div class="pt-5"></div>
     <section class="gallery-block grid-gallery">
         <div class="container">
             <div class="row">

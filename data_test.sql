@@ -1,4 +1,5 @@
-use `images`;
+use `phpimages`;
+UPDATE photos SET status_photos = 1 WHERE id = 2;
 SELECT * FROM admins
 INSERT INTO `admins`( `username`, `email`, `pass`) VALUES ("admin","admin@admin.com","admin")
 UPDATE photos SET title='' WHERE id=44;
