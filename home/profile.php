@@ -27,7 +27,8 @@ if (mysqli_num_rows($result_showphotoid) > 0) {
                         <img class="img-fluid image scale-on-hover box-profile" src="../images/' . $row_showphotoid["images_url"] . '">
                     </a>
                     <div class="card-body">
-                        <h5 class="card-title">' . $row_showphotoid["title"] . '</h5>
+                        <h5 class="card-title pt-3">Title: ' . $row_showphotoid["title"] . '</h5>
+                        <h5 class="card-title">Description: ' . $row_showphotoid["images_description"] . '</h5>
                         <p class="card-text">ID#' . $row_showphotoid["id"] . '</p>';
                 if ($row_showphotoid["status_photo"] == 0) {
                     $showphotoid = $showphotoid . '<p class="card-text">Waiting for verify. <img src="images/delete.png" alt="" srcset=""></p>';
@@ -57,9 +58,15 @@ if (mysqli_num_rows($result_showphotoid) > 0) {
                         <img class="img-fluid image scale-on-hover box-profile" src="../images/' . $row_showphotoid["images_url"] . '">
                     </a>
                     <div class="card-body">
-                        <h5 class="card-title">' . $row_showphotoid["title"] . '</h5>
-                        <p class="card-text">ID#' . $row_showphotoid["id"] . '</p>
-            
+                    <h5 class="card-title pt-3">Title: ' . $row_showphotoid["title"] . '</h5>
+                    <h5 class="card-title">Description: ' . $row_showphotoid["images_description"] . '</h5>
+                    <p class="card-text">ID#' . $row_showphotoid["id"] . '</p>';
+            if ($row_showphotoid["status_photo"] == 0) {
+                $showphotoid = $showphotoid . '<p class="card-text">Waiting for verify. <img src="images/delete.png" alt="" srcset=""></p>';
+            } elseif ($row_showphotoid["status_photo"] == 1) {
+                $showphotoid = $showphotoid . '<p class="card-text">Verify by Admin <img src="images/check-mark.png" alt="" srcset=""></p>';
+            }
+            $showphotoid = $showphotoid . '
                     </div>
                 </div>
             </div>
@@ -103,6 +110,31 @@ if (isset($_SESSION['id']) && $_SESSION['id'] ==  $row_showusername["id"]) {
     $showpasschange = '<div class="row"><div class="col-md-12 ds-post1"><button disabled="disabled">Change password - Not have permission</button></div></div>';
 }
 
+
+//TODO: show and change avatar
+if (isset($_SESSION['id']) && $_SESSION['id'] ==  $row_showusername["id"]) {
+    // ! <img class="box-icon-profile float-left" src="images/user.jpg" alt="" sizes="" srcset="">
+    $sql_ava = 'SELECT * FROM users WHERE id= ' . $_SESSION['id'] . '';
+    $result_ava = $link->query($sql_ava);
+    $row_ava = mysqli_fetch_assoc($result_ava);
+    if ($row_ava["avatar_url"] == null) {
+        $show_avatar = '<a href="../home/change_ava.php?id='.$row_ava["id"].'">
+                        <img class="box-icon-profile float-left" src="images/user.jpg" alt="" sizes="" srcset="">
+                        </a>
+                        ';
+    } else {
+        $show_avatar = '<a href="../home/change_ava.php?id='.$row_ava["id"].'">
+                        <img class="box-icon-profile float-left" src="avatar/'.$row_ava["avatar_url"].'" alt="" sizes="" srcset="">
+                        </a>
+                        ';
+    }
+
+    
+} else {
+    $show_avatar = '
+                    <img class="box-icon-profile float-left" src="images/user.jpg" alt="" sizes="" srcset="">
+                    ';
+}
 
 // <div class="col-md-12 col-lg-4 col-md-3 pt-4 item">
 // <div class="card ds-card">
@@ -187,7 +219,9 @@ if (isset($_SESSION['id']) && $_SESSION['id'] ==  $row_showusername["id"]) {
         <div class="row">
             <div class="col-md-1"></div>
             <div class="col-md-3">
-                <img class="box-icon-profile float-left" src="images/user.jpg" alt="" sizes="" srcset="">
+                <?php
+                echo $show_avatar;
+                ?>
             </div>
             <div class="col-md-8">
                 <h1 class="display-5 text-white">

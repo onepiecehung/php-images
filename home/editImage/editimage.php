@@ -75,16 +75,22 @@ if (mysqli_num_rows($result_showusername) > 0) {
 						Title old: "<?php echo $row["title"] ?>"
 					</span>
 					<span class="contact100-form-title">
-						Get new title
+						Description old: "<?php echo $row["images_description"] ?>"
+					</span>
+					<span class="contact100-form-title">
+						Edit images
 					</span>
 					<div class="wrap-input100 validate-input" data-validate="Title is required">
-						<textarea class="input100" name="message" placeholder="New title"></textarea>
+						<input class="input100" type="text" name="message" placeholder="New title">
 						<span class="focus-input100"></span>
 					</div>
-
+					<div class="wrap-input100 validate-input" data-validate="Description is required">
+						<textarea class="input100" name="message1" placeholder="New description"></textarea>
+						<span class="focus-input100"></span>
+					</div>
 					<div class="container-contact100-form-btn">
 						<button type="submit" class="contact100-form-btn">
-							Change title
+							Change
 						</button>
 					</div>
 				</form>
