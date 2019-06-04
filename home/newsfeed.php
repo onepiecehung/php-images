@@ -13,6 +13,14 @@ if (isset($_GET["id"])) {
         ';
     $result = $link->query($sql);
     $row = mysqli_fetch_assoc($result);
+    if ($row["status_photo"] == 2) {
+        echo '<script language="javascript">';
+        echo 'alert("Image was deleted");';
+        echo '</script>';
+        echo '<script language="javascript">';
+        echo 'window.location.href = "../home/profile.php?id=' . $row["id_user"] . '"';
+        echo '</script>';
+    }
     $url = '
             src="../images/' . $row["images_url"] . '"
                 ';
@@ -139,6 +147,24 @@ $sql_recommend = 'SELECT *
                     FROM photos
                 ';
 
+//TODO: show avatar
+
+
+if ($row2["avatar_url"] == null) {
+    $show_avatar = '<a href="../home/profile.php?id=' . $row2["id"] . '">
+                    <img class="box-icon float-left" src="images/user.jpg" alt="" sizes="" srcset="">
+                    </a>
+                    ';
+} else {
+    $show_avatar = '<a href="../home/profile.php?id=' . $row2["id"] . '">
+                    <img class="box-icon float-left" src="../images/avatar/' . $row2["avatar_url"] . '" alt="" sizes="" srcset="">
+                    </a>
+                    ';
+}
+
+
+
+// <img class="box-icon float-left" src="images/user.jpg" alt="" sizes="" srcset="">
 // <div class="row ds-box">
 // <div class="col-md-5 col-sm-12 dropdown">
 //     <img class="ds-thum" src="images/Images/36869222_804435913084696_1261595859506692096_n.jpg" alt="" srcset="">
@@ -213,7 +239,9 @@ $link->close();
             <div class="col-md-8 col-sm-12 mx-auto">
                 <div class="card transform-on-hover w-100">
                     <div class="card-header bg-transparent">
-                        <img class="box-icon float-left" src="images/user.jpg" alt="" sizes="" srcset="">
+                        <?php
+                        echo $show_avatar;
+                        ?>
                         <a class="d-inline-flex p-2 ds-username-title" href="#">
                             <!-- //TODO: user here -->
                             <?php
@@ -263,11 +291,11 @@ $link->close();
                                 ?>
                             </li>
                             <?php
-                                if ($row["status_photo"] == 0) {
-                                    echo '<p class="list-group-item">Waiting for verify. <img src="images/delete.png" alt="" srcset=""></p>';
-                                } elseif ($row["status_photo"] == 1) {
-                                    echo '<p class="list-group-item">Verify by Admin <img src="images/check-mark.png" alt="" srcset=""></p>';
-                                }  
+                            if ($row["status_photo"] == 0) {
+                                echo '<p class="list-group-item">Waiting for verify. <img src="images/delete.png" alt="" srcset=""></p>';
+                            } elseif ($row["status_photo"] == 1) {
+                                echo '<p class="list-group-item">Verify by Admin <img src="images/check-mark.png" alt="" srcset=""></p>';
+                            }
                             ?>
                         </ul>
                     </div>

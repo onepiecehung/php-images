@@ -3,6 +3,7 @@ require_once "../includes/session.php";
 require_once "../includes/config.php";
 $getTitleEdit = '';
 $id = $_GET["id"];
+
 //TODO: show user name
 $sql_showusername = 'SELECT * FROM users WHERE id="' . $id . '"';
 $result_showusername = $link->query($sql_showusername);
@@ -124,7 +125,7 @@ if (isset($_SESSION['id']) && $_SESSION['id'] ==  $row_showusername["id"]) {
                         ';
     } else {
         $show_avatar = '<a href="../home/change_ava.php?id='.$row_ava["id"].'">
-                        <img class="box-icon-profile float-left" src="avatar/'.$row_ava["avatar_url"].'" alt="" sizes="" srcset="">
+                        <img class="box-icon-profile float-left" src="../images/avatar/'.$row_ava["avatar_url"].'" alt="" sizes="" srcset="">
                         </a>
                         ';
     }

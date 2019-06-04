@@ -1,4 +1,5 @@
 use `phpimages`;
+UPDATE users SET avatar_url = "$image" WHERE id = 1;
 UPDATE photos SET status_photos = 1 WHERE id = 2;
 SELECT * FROM admins
 INSERT INTO `admins`( `username`, `email`, `pass`) VALUES ("admin","admin@admin.com","admin")
