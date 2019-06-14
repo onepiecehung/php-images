@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (move_uploaded_file($file_loc, $folder . $final_file)) {
             $image = $final_file;
         }
-        $sql = "INSERT INTO photos_any (title, status_photo_any, images_url,images_description) VALUES ('" . $title_image . "','0','" . $image . "','" . $images_description . "')";
+        $sql = "INSERT INTO photos_any (title, status_photo, images_url,images_description) VALUES ('" . $title_image . "','0','" . $image . "','" . $images_description . "')";
         //$sql2 = "INSERT INTO users (username,email, pass) VALUES ('" . $username . "','" . $email . "','" . $password . "');";
         // ! just for debug
         // echo $sql;

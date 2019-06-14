@@ -1,3 +1,33 @@
+<?php
+session_start();
+require_once "../includes/config.php";
+$showUser = '';
+if (isset($_SESSION["idAdmin"])) {
+    $resultUser = $link->query("SELECT * from users");
+    if (mysqli_num_rows($resultUser) > 0) {
+        while ($rowUser = mysqli_fetch_assoc($resultUser)) {
+            if ($rowUser['status_user'] == 1) { } else {
+                $showUser = $showUser . '<tr>
+                        <td>' . $rowUser["id"] . '</td>
+                        <td>' . $rowUser["username"] . '</td>
+                        <td>' . $rowUser["email"] . '</td>
+                        <td>' . $rowUser["status_user"] . '</td>
+                        <td>' . $rowUser["point_user"] . '</td>
+                        <td>
+                            <a href="deleteUser.php?id=' . $rowUser["id"] . '" class="btn btn-outline-danger">
+                                Ban
+                            </a>
+                        </td>
+                        </tr>
+            ';
+            }
+        }
+    }
+} else {
+    header("location:index.php");
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,13 +39,11 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>3RAW - List Images</title>
+    <title>3RAW - List Users</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -31,7 +59,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
@@ -58,41 +86,37 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>Username</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom user:</h6>
-                        <a class="collapse-item" href="buttons.html">List user</a>
-                        <a class="collapse-item" href="buttons.html">Add user</a>
-                        <a class="collapse-item" href="buttons.html">User Deleted</a>
+                        <a class="collapse-item" href="listUser.php">List user</a>
+                        <a class="collapse-item" href="addUser.php">Add user</a>
+                        <a class="collapse-item" href="listUserDelete.php">User Deleted</a>
                     </div>
                 </div>
             </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-wrench"></i>
                     <span>Images</span>
                 </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Image:</h6>
-                        <a class="collapse-item" href="listImages.html">List images</a>
-                        <a class="collapse-item" href="listImagesAno.html">List images anonymous</a>
-                        <a class="collapse-item" href="listImagesVerify.html">Images Verify</a>
-                        <a class="collapse-item" href="listImagesNotVerify.html">Images not Verify</a>
-                        <a class="collapse-item" href="listImagesDeleted.html">Images Deleted</a>
-                        <a class="collapse-item" href="listImagesVerifyAno.html">Images Verify anonymous</a>
-                        <a class="collapse-item" href="listImagesNotVerifyAno.html">Images not Verify anonymous</a>
-                        <a class="collapse-item" href="listImagesDeletedAno.html">Images Deleted anonymous</a>
-                        
+                        <a class="collapse-item" href="listImages.php">List images</a>
+                        <a class="collapse-item" href="listImagesAno.php">List images anonymous</a>
+                        <a class="collapse-item" href="listImagesVerify.php">Images Verify</a>
+                        <a class="collapse-item" href="listImagesNotVerify.php">Images not Verify</a>
+                        <a class="collapse-item" href="listImagesDeleted.php">Images Deleted</a>
+                        <a class="collapse-item" href="listImagesVerifyAno.php">Images Verify anonymous</a>
+                        <a class="collapse-item" href="listImagesNotVerifyAno.php">Images not Verify anonymous</a>
+                        <a class="collapse-item" href="listImagesDeletedAno.php">Images Deleted anonymous</a>
                     </div>
                 </div>
             </li>
@@ -123,11 +147,9 @@
                     </button>
 
                     <!-- Topbar Search -->
-                    <form
-                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                aria-label="Search" aria-describedby="basic-addon2">
+                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="button">
                                     <i class="fas fa-search fa-sm"></i>
@@ -141,18 +163,14 @@
 
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
                         <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-search fa-fw"></i>
                             </a>
                             <!-- Dropdown - Messages -->
-                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                                aria-labelledby="searchDropdown">
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
                                 <form class="form-inline mr-auto w-100 navbar-search">
                                     <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small"
-                                            placeholder="Search for..." aria-label="Search"
-                                            aria-describedby="basic-addon2">
+                                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
                                         <div class="input-group-append">
                                             <button class="btn btn-primary" type="button">
                                                 <i class="fas fa-search fa-sm"></i>
@@ -170,15 +188,17 @@
 
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
-                                <img class="img-profile rounded-circle"
-                                    src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Hallo:
+                                    <?php
+                                    //TODO: showusername
+                                    echo $_SESSION["usernameAdmin"];
+                                    ?>
+                                </span>
+                                <img class="img-profile rounded-circle" src="../home/images/user.jpg" />
                             </a>
                             <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="userDropdown">
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
 
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -192,43 +212,30 @@
                 </nav>
                 <!-- End of Topbar -->
 
-                <!-- Begin Page Content -->
+                <!-- !  Begin Page Content -->
                 <div class="container-fluid">
 
-                    <!-- Page Heading -->
+                    <!-- ? Page Heading -->
                     <div class="content table-responsive table-full-width">
                         <table class="table table-hover table-striped">
                             <thead>
                                 <th>ID</th>
-
-                                <th>Title</th>
-                                <th>Id_user</th>
-
-                                <th>Images_description</th>
-                                <th>Images_url</th>
+                                <th>UserName</th>
+                                <th>Email</th>
+                                <th>Status User</th>
+                                <th>Point User</th>
                                 <th></th>
 
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><%= data.posts[i].id %></td>
-                                    <td><%= data.posts[i].title %></td>
-                                    <td><%= data.posts[i].id_user %></td>
-
-                                    <td><%= data.posts[i].images_description %></td>
-                                    <td><img src="../uploads/<%= data.posts[i].images_url %>"" style="
-                                            width:300px;height:200px; object-fit: cover; "></td>                                                
-                                        
-                                        <td>
-                                            <a href="/admin/listdeletephoto0/<%=data.posts[i].id %>"
-                                            class="btn btn-danger">
-                                        Delete </a>
-                                    </td>
+                                    <?php
+                                    //TODO: show username
+                                    echo $showUser;
+                                    ?>
                                 </tr>
                             </tbody>
-
                         </table>
-
                     </div>
 
                 </div>
@@ -259,8 +266,7 @@
     </a>
 
     <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -272,7 +278,7 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="logout.php">Logout</a>
                 </div>
             </div>
         </div>

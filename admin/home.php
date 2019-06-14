@@ -1,3 +1,38 @@
+<?php
+session_start();
+require_once "../includes/config.php";
+if (isset($_SESSION["idAdmin"])) {
+  // ? For Login
+  //TODO: show Total users
+  $resultTotalUser = $link->query("SELECT count(*) as total from users");
+  $totalUser = mysqli_fetch_assoc($resultTotalUser);
+  //TODO: show Total image
+  $resultTotalImage = $link->query("SELECT count(*) as total from photos");
+  $totalImage = mysqli_fetch_assoc($resultTotalImage);
+  //TODO: show Total image verify
+  $resultTotalImageVer = $link->query("SELECT count(*) as total from photos where status_photo = 1");
+  $totalImageVer = mysqli_fetch_assoc($resultTotalImageVer);
+  //TODO: show Total image not verify
+  $resultTotalImageNotVer = $link->query("SELECT count(*) as total from photos where status_photo = 0");
+  $totalImageNotVer = mysqli_fetch_assoc($resultTotalImageNotVer);
+  // ? For without login
+  //TODO: show Total image
+  $resultTotalImageA = $link->query("SELECT count(*) as total from photos_any");
+  $totalImageA = mysqli_fetch_assoc($resultTotalImageA);
+  //TODO: show Total image verify
+  $resultTotalImageVerA = $link->query("SELECT count(*) as total from photos_any where status_photo = 1");
+  $totalImageVerA = mysqli_fetch_assoc($resultTotalImageVerA);
+  //TODO: show Total image not verify
+  $resultTotalImageNotVerA = $link->query("SELECT count(*) as total from photos_any where status_photo = 0");
+  $totalImageNotVerA = mysqli_fetch_assoc($resultTotalImageNotVerA);
+} else {
+  # code...
+}
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,9 +47,7 @@
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
-  <link
-    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.min.css" rel="stylesheet" />
@@ -26,7 +59,7 @@
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
         <div class="sidebar-brand-icon rotate-n-15">
           <i class="fas fa-laugh-wink"></i>
         </div>
@@ -53,39 +86,37 @@
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
-          aria-controls="collapseTwo">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
           <i class="fas fa-fw fa-cog"></i>
           <span>Username</span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Custom user:</h6>
-            <a class="collapse-item" href="listUser.html">List user</a>
-            <a class="collapse-item" href="addUser.html">Add user</a>
-            <a class="collapse-item" href="listUserDelete.html">User Deleted</a>
+            <a class="collapse-item" href="listUser.php">List user</a>
+            <a class="collapse-item" href="addUser.php">Add user</a>
+            <a class="collapse-item" href="listUserDelete.php">User Deleted</a>
           </div>
         </div>
       </li>
 
       <!-- Nav Item - Utilities Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-          aria-expanded="true" aria-controls="collapseUtilities">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
           <i class="fas fa-fw fa-wrench"></i>
           <span>Images</span>
         </a>
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Custom Image:</h6>
-            <a class="collapse-item" href="listImages.html">List images</a>
-            <a class="collapse-item" href="listImagesAno.html">List images anonymous</a>
-            <a class="collapse-item" href="listImagesVerify.html">Images Verify</a>
-            <a class="collapse-item" href="listImagesNotVerify.html">Images not Verify</a>
-            <a class="collapse-item" href="listImagesDeleted.html">Images Deleted</a>
-            <a class="collapse-item" href="listImagesVerifyAno.html">Images Verify anonymous</a>
-            <a class="collapse-item" href="listImagesNotVerifyAno.html">Images not Verify anonymous</a>
-            <a class="collapse-item" href="listImagesDeletedAno.html">Images Deleted anonymous</a>
+            <a class="collapse-item" href="listImages.php">List images</a>
+            <a class="collapse-item" href="listImagesAno.php">List images anonymous</a>
+            <a class="collapse-item" href="listImagesVerify.php">Images Verify</a>
+            <a class="collapse-item" href="listImagesNotVerify.php">Images not Verify</a>
+            <a class="collapse-item" href="listImagesDeleted.php">Images Deleted</a>
+            <a class="collapse-item" href="listImagesVerifyAno.php">Images Verify anonymous</a>
+            <a class="collapse-item" href="listImagesNotVerifyAno.php">Images not Verify anonymous</a>
+            <a class="collapse-item" href="listImagesDeletedAno.php">Images Deleted anonymous</a>
           </div>
         </div>
       </li>
@@ -113,8 +144,7 @@
           <!-- Topbar Search -->
           <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
             <div class="input-group">
-              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                aria-label="Search" aria-describedby="basic-addon2" />
+              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" />
               <div class="input-group-append">
                 <button class="btn btn-primary" type="button">
                   <i class="fas fa-search fa-sm"></i>
@@ -127,17 +157,14 @@
           <ul class="navbar-nav ml-auto">
             <!-- Nav Item - Search Dropdown (Visible Only XS) -->
             <li class="nav-item dropdown no-arrow d-sm-none">
-              <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
+              <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-search fa-fw"></i>
               </a>
               <!-- Dropdown - Messages -->
-              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                aria-labelledby="searchDropdown">
+              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
                 <form class="form-inline mr-auto w-100 navbar-search">
                   <div class="input-group">
-                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                      aria-label="Search" aria-describedby="basic-addon2" />
+                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" />
                     <div class="input-group-append">
                       <button class="btn btn-primary" type="button">
                         <i class="fas fa-search fa-sm"></i>
@@ -154,10 +181,14 @@
 
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
-              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
-                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60" />
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Hallo:
+                  <?php
+                  //TODO: showusername
+                  echo $_SESSION["usernameAdmin"];
+                  ?>
+                </span>
+                <img class="img-profile rounded-circle" src="../home/images/user.jpg" />
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -176,9 +207,8 @@
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                class="fas fa-download fa-sm text-white-50"></i> Generate
-              Report</a>
+            <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate
+              Report</a> -->
           </div>
 
           <!-- Content Row -->
@@ -193,7 +223,10 @@
                         Total user
                       </div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800">
-                        $40,000
+                        <?php
+                        //TODO: show total user
+                        echo $totalUser["total"];
+                        ?>
                       </div>
                     </div>
                     <div class="col-auto">
@@ -211,10 +244,13 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                        Total Image
+                        Total Image With Login
                       </div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800">
-                        $215,000
+                        <?php
+                        //TODO: show total image
+                        echo $totalImage["total"];
+                        ?>
                       </div>
                     </div>
                     <div class="col-auto">
@@ -232,18 +268,20 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                        Images Verify
+                        Images Verify With Login
                       </div>
                       <div class="row no-gutters align-items-center">
                         <div class="col-auto">
                           <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                            50%
+                            <?php
+                            //TODO: show total image
+                            echo $totalImageVer["total"];
+                            ?>
                           </div>
                         </div>
                         <div class="col">
                           <div class="progress progress-sm mr-2">
-                            <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50"
-                              aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                           </div>
                         </div>
                       </div>
@@ -263,10 +301,13 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                        Pending Verify
+                        Images Pending Verify With Login
                       </div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800">
-                        18
+                        <?php
+                        //TODO: show total image
+                        echo $totalImageNotVer["total"];
+                        ?>
                       </div>
                     </div>
                     <div class="col-auto">
@@ -277,14 +318,93 @@
               </div>
             </div>
           </div>
+          <div class="row">
+            <div class="col-xl-3 col-md-6 mb-4"></div>
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                        Total Image Without Login
+                      </div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">
+                        <?php
+                        //TODO: show total image
+                        echo $totalImageA["total"];
+                        ?>
+                      </div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-          <!-- Content Row -->
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                        Images Verify Without Login
+                      </div>
+                      <div class="row no-gutters align-items-center">
+                        <div class="col-auto">
+                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                            <?php
+                            //TODO: show total image
+                            echo $totalImageVerA["total"];
+                            ?>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="progress progress-sm mr-2">
+                            <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
+            <!-- Pending Requests Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                        Images Pending Verify Without Login
+                      </div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">
+                        <?php
+                        //TODO: show total image
+                        echo $totalImageNotVerA["total"];
+                        ?>
+                      </div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-comments fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <!-- /.container-fluid -->
       </div>
-      <!-- End of Main Content -->
+      <!-- Earnings (Monthly) Card Example -->
 
+      <!-- Content Row -->
       <!-- Footer -->
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
@@ -295,7 +415,13 @@
       </footer>
       <!-- End of Footer -->
     </div>
-    <!-- End of Content Wrapper -->
+    <!-- /.container-fluid -->
+  </div>
+  <!-- End of Main Content -->
+
+
+  </div>
+  <!-- End of Content Wrapper -->
   </div>
   <!-- End of Page Wrapper -->
 
@@ -305,8 +431,7 @@
   </a>
 
   <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -322,7 +447,7 @@
           <button class="btn btn-secondary" type="button" data-dismiss="modal">
             Cancel
           </button>
-          <a class="btn btn-primary" href="login.html">Logout</a>
+          <a class="btn btn-primary" href="logout.php">Logout</a>
         </div>
       </div>
     </div>

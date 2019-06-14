@@ -33,6 +33,18 @@ if (isset($_GET["id"])) {
         ';
     $result2 = $link->query($sql2);
     $row2 = mysqli_fetch_assoc($result2);
+    //TODO: show avatar
+    if ($row2["avatar_url"] == null) {
+        $show_avatar = '<a href="../home/profile.php?id=' . $row2["id"] . '">
+                    <img class="box-icon float-left" src="images/user.jpg" alt="" sizes="" srcset="">
+                    </a>
+                    ';
+    } else {
+        $show_avatar = '<a href="../home/profile.php?id=' . $row2["id"] . '">
+                    <img class="box-icon float-left" src="../images/avatar/' . $row2["avatar_url"] . '" alt="" sizes="" srcset="">
+                    </a>
+                    ';
+    }
     //TODO: just for recommend
 } else {
     $ids_get = $_GET["ids"];
@@ -42,11 +54,24 @@ if (isset($_GET["id"])) {
 ';
     $result = $link->query($sql);
     $row = mysqli_fetch_assoc($result);
+    if ($row['status_photo'] == 2) {
+        echo '<script language="javascript">';
+        echo 'alert("Image was deleted");';
+        echo '</script>';
+        echo '<script language="javascript">';
+        echo 'window.location.href = "../home"';
+        echo '</script>';
+    }
     $url = '
             src="../images/' . $row["images_url"] . '"
             ';
     $download_image = '../images/' . $row["images_url"] . '';
+    $show_avatar = '
+                    <img class="box-icon float-left" src="images/user.jpg" alt="" sizes="" srcset="">
+                    
+                    ';
 }
+
 // else {
 //     echo '<script language="javascript">';
 //     echo 'alert("Nothing here.\nYou will be return home.\nThank you!")';
@@ -64,7 +89,7 @@ $result_lastid = $link->query($sql_lastid);
 $row_lastid = mysqli_fetch_assoc($result_lastid);
 $show_recommend = '';
 if ((int)$row_lastid["id"] > 10) {
-    $start_id = $row_lastid["id"] - 10;
+    $start_id = $row_lastid["id"] - 15;
     $end_id = $row_lastid["id"] - 1;
     $sql_show_recommend = 'SELECT * FROM photos 
                     WHERE id between ' . $start_id . ' and ' . $end_id . ' ORDER BY id DESC';
@@ -77,7 +102,8 @@ if ((int)$row_lastid["id"] > 10) {
             $sql_getid = 'SELECT * FROM users WHERE id=(SELECT id_user FROM photos WHERE id= ' . $row_r["id"] . ') ';
             $result_getid = $link->query($sql_getid);
             $row_getid = mysqli_fetch_assoc($result_getid);
-            $show_recommend = $show_recommend . '
+            if ($row_r["status_photo"] == 2) { } else {
+                $show_recommend = $show_recommend . '
                     <div class="row ds-box">
                         <div class="col-md-5 col-sm-12 dropdown">
                             <a href="../home/newsfeed.php?id=' . $row_r["id"] . '">
@@ -99,6 +125,7 @@ if ((int)$row_lastid["id"] > 10) {
                     </div>   
                     <div class="d-flex p-2"></div> 
                     ';
+            }
         }
     }
 } else {
@@ -147,20 +174,7 @@ $sql_recommend = 'SELECT *
                     FROM photos
                 ';
 
-//TODO: show avatar
 
-
-if ($row2["avatar_url"] == null) {
-    $show_avatar = '<a href="../home/profile.php?id=' . $row2["id"] . '">
-                    <img class="box-icon float-left" src="images/user.jpg" alt="" sizes="" srcset="">
-                    </a>
-                    ';
-} else {
-    $show_avatar = '<a href="../home/profile.php?id=' . $row2["id"] . '">
-                    <img class="box-icon float-left" src="../images/avatar/' . $row2["avatar_url"] . '" alt="" sizes="" srcset="">
-                    </a>
-                    ';
-}
 
 
 

@@ -9,6 +9,14 @@ $sql_showusername = 'SELECT * FROM users WHERE id="' . $id . '"';
 $result_showusername = $link->query($sql_showusername);
 $showusername = '';
 $row_showusername = mysqli_fetch_assoc($result_showusername);
+if ($row_showusername['status_user'] == 1) {
+    echo '<script language="javascript">';
+    echo 'alert("Username was banned")';
+    echo '</script>';
+    echo '<script language="javascript">';
+    echo 'window.location.href = "../home"';
+    echo '</script>';
+}
 //TODO: show image for user name
 $showphotoid = '';
 $sql_showphotoid = 'SELECT * FROM photos
@@ -119,22 +127,31 @@ if (isset($_SESSION['id']) && $_SESSION['id'] ==  $row_showusername["id"]) {
     $result_ava = $link->query($sql_ava);
     $row_ava = mysqli_fetch_assoc($result_ava);
     if ($row_ava["avatar_url"] == null) {
-        $show_avatar = '<a href="../home/change_ava.php?id='.$row_ava["id"].'">
+        $show_avatar = '<a href="../home/change_ava.php?id=' . $row_ava["id"] . '">
                         <img class="box-icon-profile float-left" src="images/user.jpg" alt="" sizes="" srcset="">
                         </a>
                         ';
     } else {
-        $show_avatar = '<a href="../home/change_ava.php?id='.$row_ava["id"].'">
-                        <img class="box-icon-profile float-left" src="../images/avatar/'.$row_ava["avatar_url"].'" alt="" sizes="" srcset="">
+        $show_avatar = '<a href="../home/change_ava.php?id=' . $row_ava["id"] . '">
+                        <img class="box-icon-profile float-left" src="../images/avatar/' . $row_ava["avatar_url"] . '" alt="" sizes="" srcset="">
                         </a>
                         ';
     }
-
-    
 } else {
-    $show_avatar = '
-                    <img class="box-icon-profile float-left" src="images/user.jpg" alt="" sizes="" srcset="">
-                    ';
+    $sql_ava = 'SELECT * FROM users WHERE id= ' . $id . '';
+    $result_ava = $link->query($sql_ava);
+    $row_ava = mysqli_fetch_assoc($result_ava);
+    if ($row_ava["avatar_url"] == null) {
+        $show_avatar = '
+                        <img class="box-icon-profile float-left" src="images/user.jpg" alt="" sizes="" srcset="">
+                       
+                        ';
+    } else {
+        $show_avatar = '
+                        <img class="box-icon-profile float-left" src="../images/avatar/' . $row_ava["avatar_url"] . '" alt="" sizes="" srcset="">
+                       
+                        ';
+    }
 }
 
 // <div class="col-md-12 col-lg-4 col-md-3 pt-4 item">

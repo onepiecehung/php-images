@@ -1,31 +1,24 @@
 <?php
 session_start();
-// if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-//     header("location: ../home/");
-//     // exit;
-// }
-// Include config file
 require_once "../includes/config.php";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['pass'];
     $sql = 'SELECT *
-    FROM users
+    FROM admins
     WHERE email = "' . $email . '" and pass="' . $password . '"';
     $result = $link->query($sql);
-    // echo($result);
     if (mysqli_num_rows($result) == 1) {
         $row = mysqli_fetch_assoc($result);
         if ($email == $row["email"]) {
-            // $_SESSION["loggedin"] = true;
-            $_SESSION["id"] = $row["id"];
-            $_SESSION["username"] = $row["username"];
+            $_SESSION["idAdmin"] = $row["id"];
+            $_SESSION["usernameAdmin"] = $row["username"];
             echo '<script language="javascript">';
             // echo 'alert("Login successful.")';
             echo 'alert("Login successful\nWelcome back '. $_SESSION["username"].'")';
             echo '</script>';
             echo '<script language="javascript">';
-            echo 'window.location.href = "../home/"';
+            echo 'window.location.href = "index.php"';
             echo '</script>';
         }
 
@@ -38,8 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo 'alert("Login unsuccessful.\nEmail or password is incorrect.\nYou will return Login, right now.")';
         echo '</script>';
         echo '<script language="javascript">';
-        echo 'window.location.href = "../login/"';
+        echo 'window.location.href = "index.php"';
         echo '</script>';
     }
-    //echo ($sql);
 }
