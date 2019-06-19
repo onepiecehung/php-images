@@ -219,11 +219,15 @@ User login/
     </a>
 </p>
 
+> ### Login admin
+
 <p align="center">
     <a href="https://github.com/onepiecehung">
         <img src="https://imgur.com/I5G8ads.png" alt="@onepiecehung"/>
     </a>
 </p>
+
+> ### Dashboard
 
 <p align="center">
     <a href="https://github.com/onepiecehung">
@@ -231,11 +235,15 @@ User login/
     </a>
 </p>
 
+> ### List user
+
 <p align="center">
     <a href="https://github.com/onepiecehung">
         <img src="https://imgur.com/WF5dENf.png" alt="@onepiecehung"/>
     </a>
 </p>
+
+> ### Add user
 
 <p align="center">
     <a href="https://github.com/onepiecehung">
@@ -243,11 +251,15 @@ User login/
     </a>
 </p>
 
+> ### List user deleted
+
 <p align="center">
     <a href="https://github.com/onepiecehung">
         <img src="https://imgur.com/rB0gXvc.png" alt="@onepiecehung"/>
     </a>
 </p>
+
+> ### List image
 
 <p align="center">
     <a href="https://github.com/onepiecehung">
@@ -255,11 +267,15 @@ User login/
     </a>
 </p>
 
+> ### List image Anonymous
+
 <p align="center">
     <a href="https://github.com/onepiecehung">
         <img src="https://imgur.com/eDEOJ5B.png" alt="@onepiecehung"/>
     </a>
 </p>
+
+> ### List image verify by admin
 
 <p align="center">
     <a href="https://github.com/onepiecehung">
@@ -267,11 +283,15 @@ User login/
     </a>
 </p>
 
+> ### List image not verify
+
 <p align="center">
     <a href="https://github.com/onepiecehung">
         <img src="https://imgur.com/GE56yjy.png" alt="@onepiecehung"/>
     </a>
 </p>
+
+> ### List image deleted
 
 <p align="center">
     <a href="https://github.com/onepiecehung">
@@ -279,17 +299,23 @@ User login/
     </a>
 </p>
 
+> ### List image anonymous verify by admin
+
 <p align="center">
     <a href="https://github.com/onepiecehung">
         <img src="https://imgur.com/4KsU5yw.png" alt="@onepiecehung"/>
     </a>
 </p>
 
+> ### List image anonymous not verify by admin
+
 <p align="center">
     <a href="https://github.com/onepiecehung">
         <img src="https://imgur.com/1QrIqxg.png" alt="@onepiecehung"/>
     </a>
 </p>
+
+> ### List image anonymous deleted
 
 <p align="center">
     <a href="https://github.com/onepiecehung">
