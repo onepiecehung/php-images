@@ -11,7 +11,11 @@
 
 <hr>
 
-# Setup 
+# Setup and installation
+
+```
+$ git clone https://github.com/onepiecehung/php-images.git
+```
 
 1. Install <b>Xampp</b> or something else like that <a href="https://www.apachefriends.org">Download xampp</a>
 2. Open port in <b>Xampp</b> *8886
@@ -27,7 +31,7 @@
 ```
 
 <p style="text-color:red">
-    > And add line 
+    > #### And add line 
 </p>
 
 
@@ -38,17 +42,14 @@ ServerName 3raw.cc
 </VirtualHost>
 ```
 
-> #### You can see: <a href="https://paste.ofcode.org/Hdv2ueBu2KaYmmFzWZDg7J"><b>Example</b></a>
-
-## How to installation
-
-```
-$ git clone https://github.com/onepiecehung/php-images.git
-```
+4. Import database
 
 ```python
 import file `phpimages.sql` to your database
 ```
+
+> #### You can see: <a href="https://paste.ofcode.org/Hdv2ueBu2KaYmmFzWZDg7J"><b>Example</b></a>
+
 
 ## Config file _config.php_
 
