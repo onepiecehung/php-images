@@ -61,3 +61,66 @@ import file `phpimages.sql` to your database
 ```python
 Go to: `localhost:8886` 
 ```
+
+## List
+
+```python
+root/
+└── Login and regsiter/
+      ├── Search (for title or decription)
+      ├── Login
+      └── Regsiter
+```
+
+```python
+User not login/
+└──Upload/
+      ├── Reaction
+      ├── Comments (login with FB, GG, TW, etc.)
+      └── Share (FB, TW, etc )
+```
+
+```python
+User login/
+└── User normal/
+    ├── image/
+    │   ├── Reaction
+    │   ├── Comments (login with FB, GG, TW, etc.)
+    │   ├── Share (FB, TW, etc )
+    │   ├── Edit image (Title, Description)
+    │   ├── Delete Image
+    │   ├── Upload image
+    │   └── Download
+    └── Manage/
+        ├── Change password
+        ├── Change avatar
+        ├── Photo library
+        ├── Photo management
+        └── Mesenage
+```
+
+```python
+User login/
+└── User admin/
+    ├── image/
+    │   ├── Photo management
+    │   ├── Delete comments (login with FB, GG, TW, etc.)
+    │   ├── Edit image (Title, Description)
+    │   ├── Delete Image
+    │   ├── Restore image
+    │   └── Download
+    ├── User/
+    │   ├── Add user
+    │   ├── User management.
+    │   ├── Ban/Delete user
+    │   ├── View list user
+    │   └── View list user delete
+    └── Dashboard/
+        ├── Total user 
+        ├── Total image with login 
+        ├── Total images verify with login 
+        ├── Total images pending verify with login 
+        ├── Total image without login 
+        ├── Total images verify without login 
+        └── Total images pending verify without login 
+```
