@@ -141,8 +141,145 @@ User login/
 
 # Image example
 
+> ### Login
+
 <p align="center">
     <a href="https://github.com/onepiecehung">
         <img src="https://imgur.com/KYxDbsN.png" alt="@onepiecehung"/>
     </a>
 </p>
+
+> ### Regsiter
+
+<p align="center">
+    <a href="https://github.com/onepiecehung">
+        <img src="https://imgur.com/zyarFR5.png" alt="@onepiecehung"/>
+    </a>
+</p>
+
+<p align="center">
+    <a href="https://github.com/onepiecehung">
+        <img src="https://imgur.com/GHcT2Vq.png" alt="@onepiecehung"/>
+    </a>
+</p>
+
+<p align="center">
+    <a href="https://github.com/onepiecehung">
+        <img src="https://imgur.com/kvfUDmh.png" alt="@onepiecehung"/>
+    </a>
+</p>
+
+<p align="center">
+    <a href="https://github.com/onepiecehung">
+        <img src="https://imgur.com/G7ET94q.png" alt="@onepiecehung"/>
+    </a>
+</p>
+
+<p align="center">
+    <a href="https://github.com/onepiecehung">
+        <img src="https://imgur.com/O5Uc8t5.png" alt="@onepiecehung"/>
+    </a>
+</p>
+
+<p align="center">
+    <a href="https://github.com/onepiecehung">
+        <img src="https://imgur.com/pRnoLyX.png" alt="@onepiecehung"/>
+    </a>
+</p>
+
+<p align="center">
+    <a href="https://github.com/onepiecehung">
+        <img src="https://imgur.com/EJUPVB6.png" alt="@onepiecehung"/>
+    </a>
+</p>
+
+<p align="center">
+    <a href="https://github.com/onepiecehung">
+        <img src="https://imgur.com/ZAdTNJ6.png" alt="@onepiecehung"/>
+    </a>
+</p>
+
+<p align="center">
+    <a href="https://github.com/onepiecehung">
+        <img src="https://imgur.com/q4Qky1A.png" alt="@onepiecehung"/>
+    </a>
+</p>
+
+<p align="center">
+    <a href="https://github.com/onepiecehung">
+        <img src="https://imgur.com/I5G8ads.png" alt="@onepiecehung"/>
+    </a>
+</p>
+
+<p align="center">
+    <a href="https://github.com/onepiecehung">
+        <img src="https://imgur.com/gmw4T50.png" alt="@onepiecehung"/>
+    </a>
+</p>
+
+<p align="center">
+    <a href="https://github.com/onepiecehung">
+        <img src="https://imgur.com/WF5dENf.png" alt="@onepiecehung"/>
+    </a>
+</p>
+
+<p align="center">
+    <a href="https://github.com/onepiecehung">
+        <img src="https://imgur.com/NiMi2Ca.png" alt="@onepiecehung"/>
+    </a>
+</p>
+
+<p align="center">
+    <a href="https://github.com/onepiecehung">
+        <img src="https://imgur.com/rB0gXvc.png" alt="@onepiecehung"/>
+    </a>
+</p>
+
+<p align="center">
+    <a href="https://github.com/onepiecehung">
+        <img src="https://imgur.com/m1K96ld.png" alt="@onepiecehung"/>
+    </a>
+</p>
+
+<p align="center">
+    <a href="https://github.com/onepiecehung">
+        <img src="https://imgur.com/eDEOJ5B.png" alt="@onepiecehung"/>
+    </a>
+</p>
+
+<p align="center">
+    <a href="https://github.com/onepiecehung">
+        <img src="https://imgur.com/zMYUgML.png" alt="@onepiecehung"/>
+    </a>
+</p>
+
+<p align="center">
+    <a href="https://github.com/onepiecehung">
+        <img src="https://imgur.com/GE56yjy.png" alt="@onepiecehung"/>
+    </a>
+</p>
+
+<p align="center">
+    <a href="https://github.com/onepiecehung">
+        <img src="https://imgur.com/IgvqiIO.png" alt="@onepiecehung"/>
+    </a>
+</p>
+
+<p align="center">
+    <a href="https://github.com/onepiecehung">
+        <img src="https://imgur.com/4KsU5yw.png" alt="@onepiecehung"/>
+    </a>
+</p>
+
+<p align="center">
+    <a href="https://github.com/onepiecehung">
+        <img src="https://imgur.com/1QrIqxg.png" alt="@onepiecehung"/>
+    </a>
+</p>
+
+<p align="center">
+    <a href="https://github.com/onepiecehung">
+        <img src="https://imgur.com/qqulF7K.png" alt="@onepiecehung"/>
+    </a>
+</p>
+
