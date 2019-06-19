@@ -326,5 +326,6 @@ User login/
 <hr>
 
 # Thanks to
-
-<a href="https://fb.com/360AnimeTeam"><img width="100%" height="auto" src="home/images/logo.png" alt="@onepiecehung"/></a>
+<p align="center">
+<a href="https://fb.com/360AnimeTeam"><img src="home/images/logo.png" alt="@onepiecehung"/></a>
+</p>
