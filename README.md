@@ -6,7 +6,7 @@
 
 <hr> 
 
-## PHP Sharing images powered by <a href="https://github.com/360AnimeTeam">@360AT ,</a><a href="https://fb.com/360AnimeTeam">@3AT<img width="auto" height="40" src="home/images/logo.png" alt="@onepiecehung"/></a>
+## PHP Sharing images powered by <a href="https://github.com/360AnimeTeam">@360AT </a><a href="https://fb.com/360AnimeTeam"><img width="auto" height="25" src="home/images/logo.png" alt="@onepiecehung"/>@3AT</a>
 
 [![js-standard-style](https://img.shields.io/badge/Build-1906.19-brightgreen.svg?style=flat)](https://github.com/feross/standard)
 
