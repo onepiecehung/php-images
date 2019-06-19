@@ -60,7 +60,8 @@ if (mysqli_num_rows($result_showphotoid) > 0) {
         ';
             }
         } else {
-            $showphotoid = $showphotoid . '
+            if ($row_showphotoid["status_photo"] == 0 || $row_showphotoid["status_photo"] == 1) {
+                $showphotoid = $showphotoid . '
             <div class="col-md-12 col-lg-4 col-md-3 pt-4 item">
                 <div class="card ds-card">
                     <a class="lightbox" href="../home/newsfeed.php?id=' . $row_showphotoid["id"] . '">
@@ -70,16 +71,17 @@ if (mysqli_num_rows($result_showphotoid) > 0) {
                     <h5 class="card-title pt-3">Title: ' . $row_showphotoid["title"] . '</h5>
                     <h5 class="card-title">Description: ' . $row_showphotoid["images_description"] . '</h5>
                     <p class="card-text">ID#' . $row_showphotoid["id"] . '</p>';
-            if ($row_showphotoid["status_photo"] == 0) {
-                $showphotoid = $showphotoid . '<p class="card-text">Waiting for verify. <img src="images/delete.png" alt="" srcset=""></p>';
-            } elseif ($row_showphotoid["status_photo"] == 1) {
-                $showphotoid = $showphotoid . '<p class="card-text">Verify by Admin <img src="images/check-mark.png" alt="" srcset=""></p>';
-            }
-            $showphotoid = $showphotoid . '
+                if ($row_showphotoid["status_photo"] == 0) {
+                    $showphotoid = $showphotoid . '<p class="card-text">Waiting for verify. <img src="images/delete.png" alt="" srcset=""></p>';
+                } elseif ($row_showphotoid["status_photo"] == 1) {
+                    $showphotoid = $showphotoid . '<p class="card-text">Verify by Admin <img src="images/check-mark.png" alt="" srcset=""></p>';
+                }
+                $showphotoid = $showphotoid . '
                     </div>
                 </div>
             </div>
         ';
+            }
         }
     }
 }

@@ -1,3 +1,40 @@
+<?php
+session_start();
+require_once "../includes/config.php";
+$showImage = '';
+if (isset($_SESSION["idAdmin"])) {
+    $resultImage = $link->query("SELECT * from photos_any order by id DESC");
+    if (mysqli_num_rows($resultImage) > 0) {
+        while ($rowImage = mysqli_fetch_assoc($resultImage)) {
+            if ($rowImage['status_photo'] == 2) { } else {
+                $showImage = $showImage . '
+               <tr>
+               <td>' . $rowImage['id'] . '</td>
+               <td>' . $rowImage['title'] . '</td>
+              
+               <td>' . $rowImage['images_description'] . '</td>
+               <td>
+               <a href="../home/newsfeed.php?ids=' . $rowImage['id'] . '" target="_blank">
+               <img src="../images/' . $rowImage['images_url'] . '"" style=" width:300px;height:200px; object-fit: cover; ">
+               </a></td>';
+                if ($rowImage['status_photo'] == 1) {
+                    $showImage = $showImage . '<td><img src="../home/images/check-mark.png" alt="" srcset=""></td>';
+                } else if ($rowImage['status_photo'] == 0) {
+                    $showImage = $showImage . '<td><img src="../home/images/delete.png" alt="" srcset=""></td>';
+                }
+                $showImage = $showImage . '  
+                   <td>
+                       <a href="deletePhotoAno.php?id=' . $rowImage['id'] . '" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+                ';
+            }
+        }
+    }
+} else {
+    header("location:index.php");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +46,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>3RAW - List Images</title>
+    <title>3RAW - List Images Anonymous</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -31,7 +68,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
@@ -171,9 +208,13 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
-                                <img class="img-profile rounded-circle"
-                                    src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Hallo:
+                                    <?php
+                                    //TODO: showusername
+                                    echo $_SESSION["usernameAdmin"];
+                                    ?>
+                                </span>
+                                <img class="img-profile rounded-circle" src="../home/images/user.jpg" />
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -201,32 +242,18 @@
                                 <th>ID</th>
 
                                 <th>Title</th>
-                                <th>Id_user</th>
+                               
 
                                 <th>Images_description</th>
-                                <th>Images_url</th>
-                                <th></th>
+                                <th>Images</th>
+                                <th>Verify</th>
                                 <th></th>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td><%= data.posts[i].id %></td>
-                                    <td><%= data.posts[i].title %></td>
-                                    <td><%= data.posts[i].id_user %></td>
-
-                                    <td><%= data.posts[i].images_description %></td>
-                                    <td><img src="../uploads/<%= data.posts[i].images_url %>"" style="
-                                            width:300px;height:200px; object-fit: cover; "></td>                                                
-                                        <td>
-                                            <a href="/admin/listduyetphoto0/<%=data.posts[i].id %>"
-                                            class="btn btn-outline-primary"> Accept </a>
-                                    </td>
-                                    <td>
-                                        <a href="/admin/listdeletephoto0/<%=data.posts[i].id %>"
-                                            class="btn btn-outline-danger">
-                                            Delete </a>
-                                    </td>
-                                </tr>
+                                <?php
+                                //TODO: show image
+                                echo $showImage;
+                                ?>
                             </tbody>
 
                         </table>

@@ -1,14 +1,9 @@
 <?php
 require_once "../includes/session.php";
 require_once "../includes/config.php";
+$search = $_POST['search'];
 $show_content = '';
-$sql_lastid = 'SELECT id FROM photos ORDER BY id DESC LIMIT 1';
-$result_lastid = $link->query($sql_lastid);
-$row_lastid = mysqli_fetch_assoc($result_lastid);
-$start_id = 1;
-$end_id = $row_lastid["id"];
-$sql_show_recommend = 'SELECT * FROM photos 
-                WHERE id between ' . $start_id . ' and ' . $end_id . ' ORDER BY id DESC';
+$sql_show_recommend = 'SELECT * FROM photos WHERE title LIKE "' . $search . '%" OR images_description LIKE "' . $search . '%" ORDER BY id DESC';
 $result_recommend = $link->query($sql_show_recommend);
 if (mysqli_num_rows($result_recommend) > 0) {
     while ($row_r = mysqli_fetch_assoc($result_recommend)) {
@@ -40,40 +35,9 @@ if (mysqli_num_rows($result_recommend) > 0) {
         ';
         }
     }
+} else {
+    $show_content = '<h2 class="text-white pt-5">No result for: ' . $search.'</h2>';
 }
-
-$show_random = '<a href="../home/newsfeed.php?id=' . mt_rand(1, $end_id) . '" class="Linear-Gradient list-group-item list-group-item-action text-white">
-<img class="pr-2 rounded float-left" src="images/sidebar/random.png" alt="Random">
-Random</a>';
-// ! todo: HOW TO FIX ADD LINK DONT WORKING ON OWL COURSES
-$sql_slide = 'SELECT * FROM photos 
-                WHERE id between 1 and 10 ORDER BY id DESC';
-$result_slide = $link->query($sql_slide);
-$show_silde = '';
-if (mysqli_num_rows($result_recommend) > 0) {
-    while ($row_r1 = mysqli_fetch_assoc($result_slide)) {
-        $show_silde = $show_silde . '
-                <div class="owl-item">
-                    <a href="/home/newsfeed.php?id=' . $row_r1["id"] . '">
-                    <img class="ds-owl-box img-thumbnail" src="../images/' . $row_r1["images_url"] . '" alt="" srcset="">
-                    </a>
-                </div>';
-    }
-} //TODO:href="../home/newsfeed.php?id=' . $row_r1["id"] . '"
-// <div class="owl-item">
-//     <img class="ds-owl-box img-thumbnail" src="images/Images/006.jpg" alt="" srcset="">
-// </div>
-// <div class="col-md-12 col-lg-2 item">
-// <div class="card ds-card">
-//     <a class="lightbox" href="../img/image1.jpg">
-//         <img class="img-fluid image scale-on-hover" src="../img/image1.jpg">
-//     </a>
-//     <div class="card-body">
-//         <h5 class="card-title">Title</h5>
-//         <p class="card-text">Content</p>
-//     </div>
-// </div>
-// </div>
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -83,7 +47,7 @@ if (mysqli_num_rows($result_recommend) > 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>3RAW - Images</title>
+    <title>3RAW - Images search</title>
     <link rel="stylesheet" href="css/owl/owl.carousel.min.css">
     <link rel="stylesheet" href="css/owl/owl.theme.default.min.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -101,31 +65,6 @@ if (mysqli_num_rows($result_recommend) > 0) {
 <body>
     <!--TODO:Back to top-->
     <a id="button"></a>
-    <!-- <div class="d-flex" id="wrapper">
-
-        <!-- Sidebar --
-        <div class="Linear-Gradient bg-light border-right position-fixed ds-fix-1" id="sidebar-wrapper">
-            <div class="list-group list-group-flush">
-                <b>
-                    <a href="../home/" class="Linear-Gradient list-group-item list-group-item-action text-white">
-                        <img class="pr-2 rounded float-left" src="images/sidebar/home.png" alt="home">Home
-                        <img class="rounded float-right ds-hover" src="images/unchecked.png" id="menu-toggle">
-                    </a>
-                    <a href="#" class="Linear-Gradient list-group-item list-group-item-action text-white">
-                        <img class="pr-2 rounded float-left" src="images/sidebar/trend.png" alt="Trending">
-                        Trending</a>
-                    <a href="#" class="Linear-Gradient list-group-item list-group-item-action text-white">
-                        <img class="pr-2 rounded float-left" src="images/sidebar/follow.png" alt="Follow">
-                        Following</a>
-                    <?php
-                    //TODO: show random
-                    echo $show_random;
-                    ?>
-                </b>
-            </div>
-        </div>
-    </div> -->
-    <!-- /#sidebar-wrapper -->
     <!--TODO: This navigation-->
     <nav class="navbar navbar-expand-lg Linear-Gradient-nav fixed-top fix-z-1">
 
@@ -136,10 +75,11 @@ if (mysqli_num_rows($result_recommend) > 0) {
         </a>
         <!--TODO:SEARCH-->
         <form action="search.php" method="POST">
-        <div class="search-navbar" id="search-navbar">
-            <input class="" type="search" name="search" id="search" placeholder="Search anything you need: images, #tag, @user, etc...">
-        </div>
+            <div class="search-navbar" id="search-navbar">
+                <input class="" type="search" name="search" id="search" placeholder="Search anything you need: images, #tag, @user, etc...">
+            </div>
         </form>
+
         <!--TODO:END SEARCH-->
         <!--TODO: upload image-->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -154,15 +94,7 @@ if (mysqli_num_rows($result_recommend) > 0) {
     </nav>
     <!--TODO:This Header-->
     <header>
-        <div class="owl-carousel owl-theme owl-loaded owl-fix">
-            <div class="owl-stage-outer">
-                <div class="owl-stage">
-                    <?php
-                    echo $show_silde;
-                    ?>
-                </div>
-            </div>
-        </div>
+
 
 
         </div>
@@ -173,6 +105,11 @@ if (mysqli_num_rows($result_recommend) > 0) {
     <div class="pt-5"></div>
     <section class="gallery-block grid-gallery">
         <div class="container">
+            <h3 class="text-white pt-5">Search Result for:
+                <?php
+                echo $search;
+                ?>
+            </h3>
             <div class="row">
                 <?php
                 echo $show_content;
