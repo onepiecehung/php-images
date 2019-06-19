@@ -157,11 +157,15 @@ User login/
     </a>
 </p>
 
+> ### Home
+
 <p align="center">
     <a href="https://github.com/onepiecehung">
         <img src="https://imgur.com/GHcT2Vq.png" alt="@onepiecehung"/>
     </a>
 </p>
+
+> ### After upload image
 
 <p align="center">
     <a href="https://github.com/onepiecehung">
@@ -175,11 +179,15 @@ User login/
     </a>
 </p>
 
+> ### Profile
+
 <p align="center">
     <a href="https://github.com/onepiecehung">
         <img src="https://imgur.com/O5Uc8t5.png" alt="@onepiecehung"/>
     </a>
 </p>
+
+> ### Change avatar
 
 <p align="center">
     <a href="https://github.com/onepiecehung">
@@ -187,17 +195,23 @@ User login/
     </a>
 </p>
 
+> ### Change password
+
 <p align="center">
     <a href="https://github.com/onepiecehung">
         <img src="https://imgur.com/EJUPVB6.png" alt="@onepiecehung"/>
     </a>
 </p>
 
+> ### Edit image
+
 <p align="center">
     <a href="https://github.com/onepiecehung">
         <img src="https://imgur.com/ZAdTNJ6.png" alt="@onepiecehung"/>
     </a>
 </p>
+
+> ### Upload image
 
 <p align="center">
     <a href="https://github.com/onepiecehung">
