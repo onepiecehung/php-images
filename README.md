@@ -143,6 +143,6 @@ User login/
 
 <p align="center">
     <a href="https://github.com/onepiecehung">
-        <img src="https://imgur.com/KYxDbsN" alt="@onepiecehung"/>
+        <img src="https://imgur.com/KYxDbsN.png" alt="@onepiecehung"/>
     </a>
 </p>
