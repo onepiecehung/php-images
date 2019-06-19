@@ -30,9 +30,7 @@ $ git clone https://github.com/onepiecehung/php-images.git
 </Directory>
 ```
 
-<p style="text-color:red">
-    > #### And add line 
-</p>
+> #### And add line 
 
 
 ```
