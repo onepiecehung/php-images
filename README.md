@@ -6,12 +6,12 @@
 
 <hr> 
 
-## PHP Sharing images 
+## PHP Sharing images powered by <a href="https://github.com/360AnimeTeam">@360AT</a>
 [![js-standard-style](https://img.shields.io/badge/Build-1906.19-brightgreen.svg?style=flat)](https://github.com/feross/standard)
 
 <hr>
 
-# Setup and installation powered by <a href="https://github.com/360AnimeTeam">@360AT</a>
+# Setup and installation 
 
 ```
 $ git clone https://github.com/onepiecehung/php-images.git
