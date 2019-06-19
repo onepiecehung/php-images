@@ -11,7 +11,7 @@
 
 <hr>
 
-# Setup and installation
+# Setup and installation powered by <a href="https://github.com/360AnimeTeam">@360AT</a>
 
 ```
 $ git clone https://github.com/onepiecehung/php-images.git
