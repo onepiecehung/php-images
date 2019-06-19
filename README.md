@@ -62,7 +62,21 @@ import file `phpimages.sql` to your database
 Go to: `localhost:8886` 
 ```
 
-## List
+```python
+Account for test:
+└── User normal/
+    ├── User 1/ => (yourdomain.com/)
+    │     ├── ID: admin@admin.com
+    │     └── Password: 1
+    ├── User 2 to 8 (x between 2 to 8)
+    │     ├── ID: admin[x]@admin.com
+    │     └── Password: 1
+    └── User admin/ => (yourdomain.com/admin)
+          ├── ID: admin@admin.com
+          └── Password: admin
+```
+
+## List function
 
 ```python
 root/
@@ -124,3 +138,11 @@ User login/
         ├── Total images verify without login 
         └── Total images pending verify without login 
 ```
+
+# Image example
+
+<p align="center">
+    <a href="https://github.com/onepiecehung">
+        <img src="https://en.uit.edu.vn/sites/vi/files/banner_en.png" alt="@onepiecehung"/>
+    </a>
+</p>
